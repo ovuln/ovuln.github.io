@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://xvuln.com/HTB/Wifinetic/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Wifinetic - My Docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Wifinetic";
+        var mkdocs_page_input_path = "HTB/Wifinetic.md";
+        var mkdocs_page_url = "/HTB/Wifinetic/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">WEB 测试指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E6%A6%82%E8%BF%B0/">概述</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/">配置部署管理测试</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">HTB</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../HTB-Escape/">Escape</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">DOC</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../DOC/mkdocs/">Mkdocs 文档</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Read</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="../../Read/三联生活周刊.md">三联生活周刊</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="https://book.hacktricks.xyz/">Hacktricks</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li class="breadcrumb-item active">Wifinetic</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="wifinetic">Wifinetic</h1>
+<h2 id="_1">概述</h2>
+<p>Wifinetic 是⼀款简单难度的 Linux 机器，它提出了有趣的⽹络挑战，专注于⽆线安全和⽹络监控。暴露的 FTP 服务启⽤了匿名⾝份验证，允许我们下载可⽤⽂件。其中⼀个⽂件是OpenWRT备份，其中包含公开接⼊点密码的⽆线⽹络配置。影⼦或密码⽂件的内容进⼀步泄露了服务器上的⽤⼾名。有了这些信息，就可以对 SSH 服务进⾏密码重⽤攻击，从⽽使我们能够以netadmin⽤⼾的⾝份获得⽴⾜点。使⽤标准⼯具并在监控模式下使⽤提供的⽆线接⼝，我们可以暴⼒破解接⼊点的 WPS PIN 以获得预共享密钥 ( PSK )。该密码可以在 SSH 服务上重复使⽤，以获得 root 访问权限。</p>
+<h3 id="_2">所需知识</h3>
+<ul>
+<li>枚举</li>
+<li>Linux 基础知识</li>
+<li>无线网络基础知识</li>
+</ul>
+<h3 id="_3">学到的知识</h3>
+<ul>
+<li>密码重用</li>
+<li>WPS暴力破解</li>
+</ul>
+<h2 id="ftp-anonymous">FTP anonymous 登录</h2>
+<p>get  backup-OpenWrt-2023-07-26.tar 文件，config 文件夹下含有 wifi 密码与用户 netadmin 密码重用。</p>
+<h2 id="_4">权限提升</h2>
+<p>iwconfig </p>
+<p>基本信息：接口模式、关联 AP BSSID、</p>
+<p>iw dev</p>
+<p>更详细的信息</p>
+<p>getcap -r / 2&gt;/dev/null</p>
+<p>检查网络工具已经安装的工具列表</p>
+<p>wash -i wlan2</p>
+<p>枚举网络信息</p>
+<p>reaver -i mon0 -b <bssid> -vv -c 1</p>
+<p>暴力破解WPS PIN，密码与root密码重用。</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

