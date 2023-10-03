@@ -1,0 +1,9085 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="http://xvuln.com/%E6%9C%AA%E5%BD%92%E6%A1%A3/Nmap%20%E7%BD%91%E7%BB%9C%E6%9E%9A%E4%B8%BE%20-%20HTB%20%E7%AC%94%E8%AE%B0/">
+      
+      
+        <link rel="prev" href="../NTLM/">
+      
+      
+        <link rel="next" href="../OGNL%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.3">
+    
+    
+      
+        <title>Nmap 网络枚举 - HTB 笔记 - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.79e020e9.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nmap-htb" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Nmap 网络枚举 - HTB 笔记
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    This is blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CheetSheet
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CheetSheet
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/Curl%20Cheet%20Sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Curl Cheet Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/Masscan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Masscan
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/Nmap%20%E7%BD%91%E7%BB%9C%E6%9E%9A%E4%B8%BE%20-%20HTB%20%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Nmap 网络枚举 - HTB 笔记
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SMBMap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SMBMap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/WEB%20%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B8%85%E5%8D%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    WEB 渗透测试清单
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/htb%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Htb备忘录
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    攻击面分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文件上传
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/%E8%8D%AF%E7%89%A9%E7%94%A8%E9%87%8F%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    药物用量及注意事项
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    SQLMAP
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            SQLMAP
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/1%E3%80%81SQLmap%20%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1、SQLmap 基础
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/2%E3%80%81SQLMap%20%E5%85%A5%E9%97%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2、SQLMap 入门
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/3%E3%80%81SQLMap%20%E8%BE%93%E5%87%BA%E8%AF%B4%E6%98%8E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3、SQLMap 输出说明
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/4%E3%80%81%E6%9E%84%E5%BB%BA%E6%94%BB%E5%87%BB/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4、构建攻击
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/5%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%9A%E4%B8%BE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5、数据库枚举
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/6%E3%80%81%E7%BB%95%E8%BF%87%20Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E4%BF%9D%E6%8A%A4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6、绕过 Web 应用程序保护
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/7%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%88%A9%E7%94%A8%28OS%20Exploitation%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7、操作系统利用(OS Exploitation)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CheetSheet/SQLMAP/SQLMap%E5%9F%BA%E7%A1%80%E7%BB%93%E8%AE%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQLMap基础结论
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DOC
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            DOC
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DOC/Github%20Page/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Github Page
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DOC/mkdocs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MkDocs DOC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    HTB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            HTB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/Absolute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Absolute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/Busqueda-DOC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Busqueda
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/Cap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CAP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/HTB-Active/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTB Active
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/HTB-Curling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hack The Box - Curling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/HTB-Escape/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTB-Escape
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/HTB-Goodgame/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTB Goodgame
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/HTB-Inject/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Inject
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/HTB-Seventeen/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    艰难的机器 艰难的开始
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/HTB-Tirck/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTB Tirck
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/Pollution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/Precious/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Precious
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/Tirck/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trick
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/Wifinetic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wifinetic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HTB/htb%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Htb备忘录
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    HW面试
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            HW面试
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HW%E9%9D%A2%E8%AF%95/%E7%9B%B2SSRF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    盲SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HW%E9%9D%A2%E8%AF%95/%E9%A2%98%E5%BA%93/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    题库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Linux
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Bash%20%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bash 执行流程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Bash%20%E8%84%9A%E6%9C%AC%E6%8E%A7%E5%88%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bash 脚本控制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Bash%E8%84%9A%E6%9C%AC%E5%B7%A5%E4%BD%9C%E7%BB%84%E4%BB%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bash脚本工作组件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Bash%E8%84%9A%E6%9C%AC%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bash脚本简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Linux%20Get%20Shell%20%E5%90%8E%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Get Shell 后信息收集
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Linux%20%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux 权限提升
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Linux%20%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux 系统信息
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Linux%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux工作效率
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Linux%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux工作流程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Linux%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%20cheat%20sheep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux常用配置 cheat sheep
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Linux/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux系统管理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MWebLibrary
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            MWebLibrary
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            Docs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MWebLibrary/docs/16926210876737/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    16926210876737
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    OWASP WEB 笔记
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            OWASP WEB 笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.10Map%20%E5%BA%94%E7%94%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.10Map 应用框架
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.1%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1信息收集
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.2%E5%AF%B9%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E8%BF%9B%E8%A1%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E5%8F%91%E7%8E%B0%E4%BE%A6%E5%AF%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2对信息泄露进行搜索引擎发现侦察
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.3%E6%A3%80%E6%9F%A5%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9B%BE%E5%85%83%E6%96%87%E4%BB%B6%E6%98%AF%E5%90%A6%E6%9C%89%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3检查网络服务器图元文件是否有信息泄露
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.4%E6%9E%9A%E4%B8%BE%20Web%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4枚举 Web 服务器上的应用程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.5%E5%AE%A1%E6%9F%A5%E7%BD%91%E9%A1%B5%E5%86%85%E5%AE%B9%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5审查网页内容是否存在信息泄露
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.6%E7%A1%AE%E5%AE%9A%E5%BA%94%E7%94%A8%E5%85%A5%E5%8F%A3%E7%82%B9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6确定应用入口点
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.7%E9%80%9A%E8%BF%87%E5%BA%94%E7%94%A8%E6%98%A0%E5%B0%84%E6%89%A7%E8%A1%8C%E8%B7%AF%E5%BE%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7通过应用映射执行路径
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.8%E6%8C%87%E7%BA%B9%20Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.8指纹 Web 应用程序框架
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1.9%E6%8C%87%E7%BA%B9%20Web%20%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.9指纹 Web 服务器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/10%E3%80%81%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10、业务逻辑测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/11%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11、客户端测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/12%E3%80%81API%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12、API测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1%E3%80%81Web%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简介和目标
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/2.1%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E9%85%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概括
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/2.3%E6%B5%8B%E8%AF%95%E5%BA%94%E7%94%A8%E5%B9%B3%E5%8F%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    测试应用平台
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/2.4%E6%B5%8B%E8%AF%95%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E7%9A%84%E6%96%87%E4%BB%B6%E6%89%A9%E5%B1%95%E5%90%8D%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    测试敏感信息的文件扩展名处理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2、配置部署管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/3%E3%80%81%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3、身份管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/4%E3%80%81%E8%AE%A4%E8%AF%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4、认证测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/5%E3%80%81%E6%8E%88%E6%9D%83%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5、授权测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/6%E3%80%81%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6、会话管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/7%E3%80%81%E8%BE%93%E5%85%A5%E9%AA%8C%E8%AF%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7、输入验证测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/8.1%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.1错误处理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/8%E3%80%81%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8、错误处理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/9%E3%80%81%E5%BC%B1%E5%AF%86%E7%A0%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9、弱密码测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E8%AE%B0%E5%BD%95230821/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    记录230821
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E8%AE%B0%E5%BD%95230822/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    记录230822
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_29" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_29" id="__nav_8_29_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    WEB Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_29_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_29">
+            <span class="md-nav__icon md-icon"></span>
+            WEB Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/10%E3%80%81%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10、业务逻辑测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/11%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11、客户端测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/12%E3%80%81API%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12、API测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/2.1%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E9%85%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概括
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/2.3%E6%B5%8B%E8%AF%95%E5%BA%94%E7%94%A8%E5%B9%B3%E5%8F%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    测试应用平台
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/2.4%E6%B5%8B%E8%AF%95%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E7%9A%84%E6%96%87%E4%BB%B6%E6%89%A9%E5%B1%95%E5%90%8D%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    测试敏感信息的文件扩展名处理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/2%E3%80%81%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2、配置部署管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/3%E3%80%81%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3、身份管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/4%E3%80%81%E8%AE%A4%E8%AF%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4、认证测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/5%E3%80%81%E6%8E%88%E6%9D%83%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5、授权测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/6%E3%80%81%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6、会话管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/7%E3%80%81%E8%BE%93%E5%85%A5%E9%AA%8C%E8%AF%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7、输入验证测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/8.1%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.1错误处理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/8%E3%80%81%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8、错误处理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/9%E3%80%81%E5%BC%B1%E5%AF%86%E7%A0%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9、弱密码测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    信息收集
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OWASP%20WEB%20%E7%AC%94%E8%AE%B0/WEB%20Guide/%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    WEB安全测试指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    WEB安全
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            WEB安全
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WEB%E5%AE%89%E5%85%A8/CORS%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CORS安全问题
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WEB%E5%AE%89%E5%85%A8/WEB%20Service%20%26%20API%20Attacks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    WEB Service & API Attacks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WEB%E5%AE%89%E5%85%A8/%E6%B3%9B%E5%BE%AE%20ecology%208.x%20%26%26%209.x%20%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    泛微 ecology 8.x &amp;&amp; 9.x 前台SQL注入
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    SSRF
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
+            <span class="md-nav__icon md-icon"></span>
+            SSRF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WEB%E5%AE%89%E5%85%A8/SSRF/SSRF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    命令注入
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5">
+            <span class="md-nav__icon md-icon"></span>
+            命令注入
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WEB%E5%AE%89%E5%85%A8/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    命令注入简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Windows
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Windows
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Windows/Windows%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Windows/Windwos%20%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windwos 基础知识
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Windows/%E4%B8%8E%20Windows%20%E4%BA%A4%E4%BA%92/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    与 Windows 交互
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Windows/%E4%BD%BF%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%92%8C%E6%B5%81%E7%A8%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    使用服务和流程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Windows/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%A0%B8%E5%BF%83/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    操作系统的核心
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Windows/%E6%BD%9C%E6%B0%B4%E6%9B%B4%E6%B7%B1%E5%B9%B6%E5%85%B3%E9%97%AD%28Diving%20Deeper%20%26%20Close%20Out%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    潜水更深并关闭(Diving Deeper & Close Out)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Windows/%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BD%BF%E7%94%A8Windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    进一步使用Windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    内网渗透
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            内网渗透
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/Pivoting%28%E6%97%8B%E8%BD%AC%29%2C%20Tunneling%28%E9%9A%A7%E9%81%93%29%2C%20and%20Port%20Forwarding%28%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pivoting(旋转), Tunneling(隧道), and Port Forwarding(端口转发)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    基础
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80/Active%20Directory%20%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory 简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80/DNS%E5%8C%BA%E5%9F%9F%E4%BC%A0%E9%80%81%28DNS%20Zone%20Transfer%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS区域传送(DNS Zone Transfer)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80/HTTP%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%28%E5%BE%85%E5%AE%8C%E6%88%90%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP相关知识(待完成)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80/%E5%B8%B8%E8%A7%81%E8%8B%B1%E8%AF%AD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    常见英语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    应急
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            应急
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%BA%94%E6%80%A5/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    应急响应
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    未归档
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            未归档
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Altered/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Altered
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Argparse%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Argparse教程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Attacking%20Active%20Directory%200%20to%200.9%EF%BC%88%E8%AF%91%E6%96%87%EF%BC%8C%E4%B8%8B%E7%AF%87%EF%BC%89/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Attacking Active Directory 0 to 0.9（译文，下篇）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CORS%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CORS安全问题
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FUZZ%20TEST/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FUZZ TEST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HTB-Retired/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Retired
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HTB-Talkative/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTB Talkative
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ipython%20exploit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ipython exploit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JAVA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAVA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JDBC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JDBC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Mkdocs%20%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mkdocs 使用文档
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Moderators%20-%20HTB/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Moderators   HTB
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NTLM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NTLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Nmap 网络枚举 - HTB 笔记
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Nmap 网络枚举 - HTB 笔记
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    介绍
+  </a>
+  
+    <nav class="md-nav" aria-label="介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    枚举
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap" class="md-nav__link">
+    Nmap 简介
+  </a>
+  
+    <nav class="md-nav" aria-label="Nmap 简介">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    用例
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap_1" class="md-nav__link">
+    Nmap架构
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    语法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    扫描技术
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    主机枚举
+  </a>
+  
+    <nav class="md-nav" aria-label="主机枚举">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    主机发现
+  </a>
+  
+    <nav class="md-nav" aria-label="主机发现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    扫描网络范围
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    扫描 IP 列表
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_1" class="md-nav__link">
+    扫描多个IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_2" class="md-nav__link">
+    扫描单个IP
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    主机和端口扫描
+  </a>
+  
+    <nav class="md-nav" aria-label="主机和端口扫描">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcp" class="md-nav__link">
+    发现开放的 TCP 端口
+  </a>
+  
+    <nav class="md-nav" aria-label="发现开放的 TCP 端口">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-tcp" class="md-nav__link">
+    扫描前 10 个 TCP 端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap-" class="md-nav__link">
+    Nmap - 跟踪数据包
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    请求
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    响应
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    连接扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-443" class="md-nav__link">
+    在 TCP 端口 443 上进行连接扫描
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    过滤端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp" class="md-nav__link">
+    发现开放的 UDP 端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    保存结果
+  </a>
+  
+    <nav class="md-nav" aria-label="保存结果">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    不同的格式
+  </a>
+  
+    <nav class="md-nav" aria-label="不同的格式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    正常输出
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grepable" class="md-nav__link">
+    Grepable 输出
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml" class="md-nav__link">
+    XML 输出
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    样式表
+  </a>
+  
+    <nav class="md-nav" aria-label="样式表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nmap_2" class="md-nav__link">
+    Nmap报告
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    服务枚举
+  </a>
+  
+    <nav class="md-nav" aria-label="服务枚举">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    服务版本检测
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    横幅抓取
+  </a>
+  
+    <nav class="md-nav" aria-label="横幅抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    转储
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    数控
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpdump-" class="md-nav__link">
+    Tcpdump - 拦截的流量
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap_3" class="md-nav__link">
+    Nmap 脚本引擎
+  </a>
+  
+    <nav class="md-nav" aria-label="Nmap 脚本引擎">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    默认脚本
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    特定脚本类别
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    定义脚本
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap-_1" class="md-nav__link">
+    Nmap - 指定脚本
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap-_2" class="md-nav__link">
+    Nmap - 攻击性扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    漏洞评估
+  </a>
+  
+    <nav class="md-nav" aria-label="漏洞评估">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nmap-_3" class="md-nav__link">
+    Nmap - 漏洞类别
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    表现
+  </a>
+  
+    <nav class="md-nav" aria-label="表现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    超时
+  </a>
+  
+    <nav class="md-nav" aria-label="超时">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rtt" class="md-nav__link">
+    优化 RTT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    最大重试次数
+  </a>
+  
+    <nav class="md-nav" aria-label="最大重试次数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    减少重试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    费率
+  </a>
+  
+    <nav class="md-nav" aria-label="费率">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    优化扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    默认扫描 - 找到打开的端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    优化扫描 - 找到开放端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    定时
+  </a>
+  
+    <nav class="md-nav" aria-label="定时">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    疯狂扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    默认扫描 - 找到打开的端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_3" class="md-nav__link">
+    疯狂扫描 - 发现开放端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    绕过安全措施
+  </a>
+  
+    <nav class="md-nav" aria-label="绕过安全措施">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idsips" class="md-nav__link">
+    防火墙和 IDS/IPS 规避
+  </a>
+  
+    <nav class="md-nav" aria-label="防火墙和 IDS/IPS 规避">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    防火墙
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ips" class="md-nav__link">
+    入侵检测系统/IPS
+  </a>
+  
+    <nav class="md-nav" aria-label="入侵检测系统/IPS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    确定防火墙及其规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_42" class="md-nav__link">
+    同步扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_43" class="md-nav__link">
+    确认扫描
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idsips_1" class="md-nav__link">
+    检测 IDS/IPS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_44" class="md-nav__link">
+    诱饵
+  </a>
+  
+    <nav class="md-nav" aria-label="诱饵">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_45" class="md-nav__link">
+    使用诱饵扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_46" class="md-nav__link">
+    测试防火墙规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_3" class="md-nav__link">
+    使用不同源 IP 扫描
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    DNS 代理
+  </a>
+  
+    <nav class="md-nav" aria-label="DNS 代理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#syn" class="md-nav__link">
+    过滤端口的 SYN 扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-syn" class="md-nav__link">
+    从 DNS 端口进行 SYN 扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_47" class="md-nav__link">
+    连接到过滤端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OGNL%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OGNL表达式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Responder%20Write-up/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Responder Write-up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Search%20Exploits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search Exploits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tmux.md/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tmux.md
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ZAP%20useful/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OWASP ZAP 自动化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hackthebox-Responder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    hackthebox Responder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux%20%E5%8F%96%E5%BE%97shell%20%E5%90%8E%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux 取得shell 后渗透思路
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pandora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandora
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../softether%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SoftEther 安装过程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../src.meizu.com/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Src.meizu.com
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BD%BF%E7%94%A8%20FFUF%20%E6%94%BB%E5%87%BB%20WEB%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    使用 FFUF 攻击 WEB 应用程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86cheetsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    资产发现
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8F%8D%E5%BC%B9shell/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    反弹shell
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%8415%E7%A7%8D%E5%B8%B8%E7%94%A8%E7%94%A8%E6%B3%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    字符串的15种常用用法
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    学习过程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%AE%89%E5%85%A8%E8%A1%8C%E4%B8%9A%E7%A0%94%E7%A9%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安全行业研究
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%89%8B%E6%B3%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    手法
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%89%93%E7%82%B9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    打点
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%8C%87%E5%8D%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文件上传
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    渗透测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95-%E6%80%9D%E8%B7%AF%E7%AF%87/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    渗透测试面试 思路篇
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%BA%A2%E9%98%9F%E6%94%BB%E9%98%B2%E2%80%94%E2%80%94%E5%A4%96%E7%BD%91%E5%BF%AB%E9%80%9F%E6%89%93%E7%82%B9%E6%96%B9%E6%B3%95%26%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    红队攻防——外网快速打点方法&技巧总结
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%BD%91%E7%BB%9C%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    网络简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E9%80%86%E5%90%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    逆向
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    流量分析
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            流量分析
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    流量分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    流量分析报告
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    渗透测试
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            渗透测试
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/CVE-2022-1292/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CVE 2022 1292
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/Insecure%20direct%20object%20references%20%28IDOR%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Insecure direct object references (IDOR)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E4%BB%80%E4%B9%88%E6%98%AF%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE%E4%B8%8E%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    什么是黄金票据与白银票据
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E5%B7%A5%E4%BD%9C%E5%B2%97%E4%BD%8D%E8%A6%81%E6%B1%82/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    工作岗位要求
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E6%96%B9%E6%B3%95%E8%AE%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    方法论
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    渗透测试面试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E9%9D%B6%E5%9C%BA%E6%95%B4%E5%90%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    靶场整合
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_16_8" id="__nav_16_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    APP
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_16_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16_8">
+            <span class="md-nav__icon md-icon"></span>
+            APP
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/APP/%E9%9D%A2%E5%90%91%E5%88%9D%E5%AD%A6%E8%80%85%E7%9A%84%E5%88%86%E6%AD%A5%20Android%20%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    面向初学者的分步 Android 渗透测试指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_16_9" id="__nav_16_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    OWASP WEB 笔记
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_16_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16_9">
+            <span class="md-nav__icon md-icon"></span>
+            OWASP WEB 笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/1%5CWeb%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简介和目标
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/API%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/Map%20%E5%BA%94%E7%94%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Map 应用框架
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    业务逻辑测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    会话管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    信息收集
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E5%AE%A1%E6%9F%A5%E7%BD%91%E9%A1%B5%E5%86%85%E5%AE%B9%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    审查网页内容是否存在信息泄露
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    客户端测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E5%AF%86%E7%A0%81%E5%AD%A6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    密码学
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E5%AF%B9%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E8%BF%9B%E8%A1%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E5%8F%91%E7%8E%B0%E4%BE%A6%E5%AF%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    对信息泄露进行搜索引擎发现侦察
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E5%BC%B1%E5%AF%86%E7%A0%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    弱密码测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E6%8C%87%E7%BA%B9%20Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    指纹 Web 应用程序框架
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E6%8C%87%E7%BA%B9%20Web%20%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    指纹 Web 服务器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E6%8E%88%E6%9D%83%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    授权测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%20Web%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    枚举 Web 服务器上的应用程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E6%89%80%E6%9C%89%E7%BD%91%E7%AB%99/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    枚举服务器上的所有网站
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E6%A3%80%E6%9F%A5%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9B%BE%E5%85%83%E6%96%87%E4%BB%B6%E6%98%AF%E5%90%A6%E6%9C%89%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    检查网络服务器图元文件是否有信息泄露
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E7%A1%AE%E5%AE%9A%E5%BA%94%E7%94%A8%E5%85%A5%E5%8F%A3%E7%82%B9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    确定应用入口点
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E8%AE%A4%E8%AF%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    认证测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    身份管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E8%BE%93%E5%85%A5%E9%AA%8C%E8%AF%81%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    输入验证测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E9%80%9A%E8%BF%87%E5%BA%94%E7%94%A8%E6%98%A0%E5%B0%84%E6%89%A7%E8%A1%8C%E8%B7%AF%E5%BE%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    通过应用映射执行路径
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E7%AE%A1%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置部署管理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    错误处理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/OWASP%20WEB%20%E7%AC%94%E8%AE%B0/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    错误处理测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_16_10" id="__nav_16_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    端口
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_16_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16_10">
+            <span class="md-nav__icon md-icon"></span>
+            端口
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E7%AB%AF%E5%8F%A3/2049%20-%20Pentesting%20NFS%20Service/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2049   Pentesting NFS Service
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E7%AB%AF%E5%8F%A3/21%20-%20Pentesting%20FTP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    21   Pentesting FTP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_16_11" id="__nav_16_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    组件
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_16_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16_11">
+            <span class="md-nav__icon md-icon"></span>
+            组件
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E7%BB%84%E4%BB%B6/FastJSON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastJSON
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E7%BB%84%E4%BB%B6/FastJSON%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%20CVE-2022-25845/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastJSON反序列化 CVE 2022 25845
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    系统
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%B3%BB%E7%BB%9F/Linux%20%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%E7%9A%84%E5%89%AF%E6%9C%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux 系统信息的副本
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%B3%BB%E7%BB%9F/Linux%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux系统信息
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%B3%BB%E7%BB%9F/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%AF%E6%9C%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux系统管理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%B3%BB%E7%BB%9F/linux%E5%9F%BA%E7%A1%80-%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    linux结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    编程
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            编程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A8%8B/GO%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GO语法学习笔记
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A8%8B/python-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Comprehensive Python Cheatsheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    网络
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            网络
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    网络简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    阅读
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%98%85%E8%AF%BB/%E3%80%8A%E5%8C%96%E5%AD%A6%E4%B9%8B%E4%B9%A6%E3%80%8B-%20%E5%BE%B7%E9%87%8C%E5%85%8B%20%C2%B7%20B.%E7%BD%97%E5%A8%81/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    《化学之书》  德里克 · B.罗威
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%98%85%E8%AF%BB/%E3%80%8A%E8%9B%A4%E8%9F%86%E5%85%88%E7%94%9F%E7%9C%8B%E5%BF%83%E7%90%86%E5%8C%BB%E7%94%9F%E3%80%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    《蛤蟆先生看心理医生》
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%98%85%E8%AF%BB/%E4%B8%89%E8%81%94%E7%94%9F%E6%B4%BB%E5%91%A8%E5%88%8A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    三联生活周刊
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_4" id="__nav_20_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    职场是个技术活笔记
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_4">
+            <span class="md-nav__icon md-icon"></span>
+            职场是个技术活笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%98%85%E8%AF%BB/%E8%81%8C%E5%9C%BA%E6%98%AF%E4%B8%AA%E6%8A%80%E6%9C%AF%E6%B4%BB%E7%AC%94%E8%AE%B0/%E8%81%8C%E5%9C%BA%E6%8A%80%E6%9C%AF%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    职场技术心得
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    介绍
+  </a>
+  
+    <nav class="md-nav" aria-label="介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    枚举
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap" class="md-nav__link">
+    Nmap 简介
+  </a>
+  
+    <nav class="md-nav" aria-label="Nmap 简介">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    用例
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap_1" class="md-nav__link">
+    Nmap架构
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    语法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    扫描技术
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    主机枚举
+  </a>
+  
+    <nav class="md-nav" aria-label="主机枚举">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    主机发现
+  </a>
+  
+    <nav class="md-nav" aria-label="主机发现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    扫描网络范围
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    扫描 IP 列表
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_1" class="md-nav__link">
+    扫描多个IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_2" class="md-nav__link">
+    扫描单个IP
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    主机和端口扫描
+  </a>
+  
+    <nav class="md-nav" aria-label="主机和端口扫描">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcp" class="md-nav__link">
+    发现开放的 TCP 端口
+  </a>
+  
+    <nav class="md-nav" aria-label="发现开放的 TCP 端口">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-tcp" class="md-nav__link">
+    扫描前 10 个 TCP 端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap-" class="md-nav__link">
+    Nmap - 跟踪数据包
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    请求
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    响应
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    连接扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-443" class="md-nav__link">
+    在 TCP 端口 443 上进行连接扫描
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    过滤端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp" class="md-nav__link">
+    发现开放的 UDP 端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    保存结果
+  </a>
+  
+    <nav class="md-nav" aria-label="保存结果">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    不同的格式
+  </a>
+  
+    <nav class="md-nav" aria-label="不同的格式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    正常输出
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grepable" class="md-nav__link">
+    Grepable 输出
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml" class="md-nav__link">
+    XML 输出
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    样式表
+  </a>
+  
+    <nav class="md-nav" aria-label="样式表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nmap_2" class="md-nav__link">
+    Nmap报告
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    服务枚举
+  </a>
+  
+    <nav class="md-nav" aria-label="服务枚举">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    服务版本检测
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    横幅抓取
+  </a>
+  
+    <nav class="md-nav" aria-label="横幅抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    转储
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    数控
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpdump-" class="md-nav__link">
+    Tcpdump - 拦截的流量
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap_3" class="md-nav__link">
+    Nmap 脚本引擎
+  </a>
+  
+    <nav class="md-nav" aria-label="Nmap 脚本引擎">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    默认脚本
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    特定脚本类别
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    定义脚本
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap-_1" class="md-nav__link">
+    Nmap - 指定脚本
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap-_2" class="md-nav__link">
+    Nmap - 攻击性扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    漏洞评估
+  </a>
+  
+    <nav class="md-nav" aria-label="漏洞评估">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nmap-_3" class="md-nav__link">
+    Nmap - 漏洞类别
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    表现
+  </a>
+  
+    <nav class="md-nav" aria-label="表现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    超时
+  </a>
+  
+    <nav class="md-nav" aria-label="超时">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rtt" class="md-nav__link">
+    优化 RTT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    最大重试次数
+  </a>
+  
+    <nav class="md-nav" aria-label="最大重试次数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    减少重试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    费率
+  </a>
+  
+    <nav class="md-nav" aria-label="费率">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    优化扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    默认扫描 - 找到打开的端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    优化扫描 - 找到开放端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    定时
+  </a>
+  
+    <nav class="md-nav" aria-label="定时">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    默认扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    疯狂扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    默认扫描 - 找到打开的端口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_3" class="md-nav__link">
+    疯狂扫描 - 发现开放端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    绕过安全措施
+  </a>
+  
+    <nav class="md-nav" aria-label="绕过安全措施">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idsips" class="md-nav__link">
+    防火墙和 IDS/IPS 规避
+  </a>
+  
+    <nav class="md-nav" aria-label="防火墙和 IDS/IPS 规避">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    防火墙
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ips" class="md-nav__link">
+    入侵检测系统/IPS
+  </a>
+  
+    <nav class="md-nav" aria-label="入侵检测系统/IPS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    确定防火墙及其规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_42" class="md-nav__link">
+    同步扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_43" class="md-nav__link">
+    确认扫描
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idsips_1" class="md-nav__link">
+    检测 IDS/IPS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_44" class="md-nav__link">
+    诱饵
+  </a>
+  
+    <nav class="md-nav" aria-label="诱饵">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_45" class="md-nav__link">
+    使用诱饵扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_46" class="md-nav__link">
+    测试防火墙规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_3" class="md-nav__link">
+    使用不同源 IP 扫描
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    DNS 代理
+  </a>
+  
+    <nav class="md-nav" aria-label="DNS 代理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#syn" class="md-nav__link">
+    过滤端口的 SYN 扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-syn" class="md-nav__link">
+    从 DNS 端口进行 SYN 扫描
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_47" class="md-nav__link">
+    连接到过滤端口
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="nmap-htb">Nmap 网络枚举 - HTB 笔记</h1>
+<h2 id="_1">介绍</h2>
+<h3 id="_2">枚举</h3>
+<p>枚举是最关键的部分。困难的不是获得目标计算机的访问权限，而是识别我们可以找到攻击目标的所有方式。</p>
+<p>不能仅仅靠工具，必须了解这些服务如何工作以及它们使用什么语法来与不同服务进行有效通讯和交互。</p>
+<p>此阶段旨在提高我们对技术、协议以及其工作方式的知识和理解，并学习处理新信息并适应我们已经获得的知识。枚举正在收集尽可能多的信息。我们掌握的信息越多，就越容易找到突破口。</p>
+<p>一旦我们知道如何访问目标系统，就不难了。我们获得访问权限的大多数方式可以缩小到以下两点：</p>
+<ul>
+<li>
+<p>允许我们与目标交互 and/or 提供额外信息的功能 and/or 资源。</p>
+</li>
+<li>
+<p>为我们提供访问目标的更重要的信息。</p>
+</li>
+</ul>
+<p>在扫描和检查时，我们正是在寻找这两种可能性。我们获得的大部分信息来自错误配置或忽视相应服务的安全性。错误配置要么是无知的结果，要么是错误的安全心态。例如，如果管理员仅依靠防火墙、组策略对象 (GPO) 和持续更新，通常不足以保护网络安全。</p>
+<p>如何与服务交互以及相关的东西是关键的，投入几个小时来更多地了解该服务、它的工作原理以及它的用途，他们将可以节省几个小时甚至几天的时间来实现他们的目标并访问该系统。</p>
+<p><code>Manual enumeration</code>是一个<code>critical</code>组件。许多扫描工具简化并加速了这个过程。但是，这些不能总是绕过服务的安全措施。说明这一点的最简单方法是使用以下示例：</p>
+<p>大多数扫描工具都有一个超时设置，直到它们收到来自服务的响应。如果此工具在特定时间内没有响应，此服务/端口将被标记为关闭、过滤或未知。在后两种情况下，我们仍然可以使用它。然而，如果一个端口被标记为关闭并且 Nmap 没有向我们显示它，我们就会处于糟糕的境地。该服务/端口可能为我们提供了找到访问系统的方法的机会。因此，在我们找到它之前，这个结果可能会花费很多不必要的时间。</p>
+<h3 id="nmap">Nmap 简介</h3>
+<p>Network Mapper ( <code>Nmap</code>) 是一个用 C、C++、Python 和 Lua 编写的开源网络分析和安全审计工具。它旨在扫描网络并使用原始数据包、服务和应用程序（包括名称和版本）识别网络上可用的主机。它还可以识别这些主机的操作系统和版本。除了其他功能外，Nmap 还提供扫描功能，可以确定是否根据需要配置了数据包过滤器、防火墙或入侵检测系统 (IDS)。</p>
+<p>建议存储每一次扫描。这可以在以后用于比较、文档和报告。毕竟，不同的工具可能会产生不同的结果。因此，区分哪个工具产生哪个结果可能是有益的。</p>
+<h4 id="_3">用例</h4>
+<p>该工具是网络管理员和 IT 安全专家最常用的工具之一。它用于：</p>
+<ul>
+<li>审计网络的安全方面</li>
+<li>模拟渗透测试</li>
+<li>检查防火墙和 IDS 设置和配置</li>
+<li>网络连接的可能类型</li>
+<li>网络映射</li>
+<li>响应分析</li>
+<li>识别开放端口</li>
+<li>脆弱性评估。</li>
+</ul>
+<h4 id="nmap_1">Nmap架构</h4>
+<p>Nmap 提供了许多不同类型的扫描，可用于获取有关我们目标的各种结果。基本上，Nmap 可以分为以下几种扫描技术：</p>
+<ul>
+<li>主机发现</li>
+<li>端口扫描</li>
+<li>服务枚举和检测</li>
+<li>操作系统检测</li>
+<li>与目标服务的脚本化交互（Nmap 脚本引擎）</li>
+</ul>
+<h4 id="_4">语法</h4>
+<p>Nmap 的语法相当简单，如下所示：</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ nmap &lt;scan types&gt; &lt;options&gt; &lt;target&gt;
+</code></pre>
+<h4 id="_5">扫描技术</h4>
+<p>Nmap 提供了许多不同的扫描技术，建立不同类型的连接并使用不同结构的数据包来发送。在这里我们可以看到 Nmap 提供的所有扫描技术：</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ nmap --help
+
+&lt;SNIP&gt;
+SCAN TECHNIQUES:
+  -sS/sT/sA/sW/sM: TCP SYN/Connect()/ACK/Window/Maimon scans
+  -sU: UDP Scan
+  -sN/sF/sX: TCP Null, FIN, and Xmas scans
+  --scanflags &lt;flags&gt;: Customize TCP scan flags
+  -sI &lt;zombie host[:probeport]&gt;: Idle scan
+  -sY/sZ: SCTP INIT/COOKIE-ECHO scans
+  -sO: IP protocol scan
+  -b &lt;FTP relay host&gt;: FTP bounce scan
+&lt;SNIP&gt;
+</code></pre>
+<p>例如，除非我们另有定义，否则TCP-SYN 扫描 (<code>-sS</code> ) 是默认设置之一，也是最流行的扫描方法之一。这种扫描方法可以每秒扫描数千个端口。TCP-SYN 扫描发送一个带有 SYN 标志的数据包，因此永远不会完成三次握手，从而导致无法与扫描端口建立完整的 TCP 连接。</p>
+<ul>
+<li>如果我们的目标将<code>SYN-ACK</code>标记的数据包发送回扫描的端口，Nmap 会检测到该端口是<code>open</code>.</li>
+<li>如果数据包收到<code>RST</code>标志，则表明该端口是<code>closed</code>。</li>
+<li>如果 Nmap 没有收到返回的数据包，它将显示为<code>filtered</code>. 根据防火墙配置，某些数据包可能会被防火墙丢弃或忽略。</li>
+</ul>
+<p>让我们举一个这样的扫描的例子。</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap -sS localhost
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-11 22:50 UTC
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000010s latency).
+Not shown: 996 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+5432/tcp open  postgresql
+5901/tcp open  vnc-1
+
+Nmap done: 1 IP address (1 host up) scanned in 0.18 seconds
+</code></pre>
+<p>在这个例子中，我们可以看到我们打开了四个不同的 TCP 端口。在第一列中，我们看到端口号。然后，在第二列中，我们看到服务的状态以及它是什么类型的服务。</p>
+<h2 id="_6">主机枚举</h2>
+<h3 id="_7">主机发现</h3>
+<p>最有效快速的方法是使用 <code>ICMP</code> 回显请求方法</p>
+<h4 id="_8">扫描网络范围</h4>
+<pre><code class="language-shell-session">$ sudo nmap 10.10.10.10/24 -sn -oA tnet | grep for | cut -d&quot; &quot; -f5
+</code></pre>
+<p><code>10.10.10.10/24</code>    目标网络范围</p>
+<p><code>-sn</code>   禁用端口扫描</p>
+<p><code>-oA tnet</code>  以名称“tnet”开头的所有格式存储结果。</p>
+<p>主机防火墙未禁用 <code>ICMP</code> 时才生效</p>
+<h4 id="ip">扫描 IP 列表</h4>
+<p>在内部渗透测试期间，向我们提供包含我们需要测试的主机的 IP 列表的情况并不少见。 Nmap 还为我们提供了实用列表并从列表中读取主机的选项，而不是手动定义或输入它们。</p>
+<pre><code class="language-shell-session">$ sudo nmap -sn -oA tnet -iL hosts.lst | grep for | cut -d&quot; &quot; -f5
+
+10.129.2.18
+10.129.2.19
+10.129.2.20
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-sn</code></td>
+<td>禁用端口扫描。</td>
+</tr>
+<tr>
+<td><code>-oA tnet</code></td>
+<td>以名称“tnet”开头的所有格式存储结果。</td>
+</tr>
+<tr>
+<td><code>-iL</code></td>
+<td>针对提供的“hosts.lst”列表中的目标执行定义的扫描。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ip_1">扫描多个IP</h4>
+<p>也可能我们只需要扫描网络的一小部分。我们上次使用的方法的替代方法是指定多个 IP 地址。</p>
+<p>扫描网络范围</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap -sn -oA tnet 10.129.2.18 10.129.2.19 10.129.2.20| grep for | cut -d&quot; &quot; -f5
+
+10.129.2.18
+10.129.2.19
+10.129.2.20
+</code></pre>
+<p>如果这些 IP 地址彼此相邻，我们也可以在各自的八位字节中定义范围。</p>
+<p>扫描网络范围</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap -sn -oA tnet 10.129.2.18-20| grep for | cut -d&quot; &quot; -f5
+
+10.129.2.18
+10.129.2.19
+10.129.2.20
+</code></pre>
+<h4 id="ip_2">扫描单个IP</h4>
+<p>在我们扫描单个主机的开放端口及其服务之前，我们首先必须确定它是否存活。为此，我们可以使用与以前相同的方法。</p>
+<p>扫描网络范围</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA host 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-14 23:59 CEST
+Nmap scan report for 10.129.2.18
+Host is up (0.087s latency).
+MAC Address: DE:AD:00:00:BE:EF
+Nmap done: 1 IP address (1 host up) scanned in 0.11 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.18</code></td>
+<td>针对目标执行定义的扫描。</td>
+</tr>
+<tr>
+<td><code>-sn</code></td>
+<td>禁用端口扫描。</td>
+</tr>
+<tr>
+<td><code>-oA host</code></td>
+<td>以名称“主机”开头的所有格式存储结果。</td>
+</tr>
+</tbody>
+</table>
+<p>如果我们禁用端口扫描 ( )，Nmap 会自动使用( ) <code>-sn</code>ping 扫描。一旦发送了这样的请求，我们通常会期待ping 主机是否处于活动状态。更有趣的是，我们之前的扫描并没有这样做，因为在 Nmap 可以发送 ICMP 回显请求之前，它会发送一个. 我们可以通过“ ”选项确认这一点。为确保发送 ICMP 回显请求，我们还为此定义了选项 ( )。<code>ICMP Echo Requests``-PE``ICMP reply``ARP ping``ARP reply``--packet-trace``-PE</code></p>
+<p>扫描网络范围</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA host -PE --packet-trace 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 00:08 CEST
+SENT (0.0074s) ARP who-has 10.129.2.18 tell 10.10.14.2
+RCVD (0.0309s) ARP reply 10.129.2.18 is-at DE:AD:00:00:BE:EF
+Nmap scan report for 10.129.2.18
+Host is up (0.023s latency).
+MAC Address: DE:AD:00:00:BE:EF
+Nmap done: 1 IP address (1 host up) scanned in 0.05 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.18</code></td>
+<td>针对目标执行定义的扫描。</td>
+</tr>
+<tr>
+<td><code>-sn</code></td>
+<td>禁用端口扫描。</td>
+</tr>
+<tr>
+<td><code>-oA host</code></td>
+<td>以名称“主机”开头的所有格式存储结果。</td>
+</tr>
+<tr>
+<td><code>-PE</code></td>
+<td>通过使用“ICMP Echo 请求”对目标执行 ping 扫描。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>另一种确定为什么 Nmap 将我们的目标标记为“活动”的方法是使用“ <code>--reason</code>”选项。</p>
+<p>扫描网络范围</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA host -PE --reason 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 00:10 CEST
+SENT (0.0074s) ARP who-has 10.129.2.18 tell 10.10.14.2
+RCVD (0.0309s) ARP reply 10.129.2.18 is-at DE:AD:00:00:BE:EF
+Nmap scan report for 10.129.2.18
+Host is up, received arp-response (0.028s latency).
+MAC Address: DE:AD:00:00:BE:EF
+Nmap done: 1 IP address (1 host up) scanned in 0.03 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.18</code></td>
+<td>针对目标执行定义的扫描。</td>
+</tr>
+<tr>
+<td><code>-sn</code></td>
+<td>禁用端口扫描。</td>
+</tr>
+<tr>
+<td><code>-oA host</code></td>
+<td>以名称“主机”开头的所有格式存储结果。</td>
+</tr>
+<tr>
+<td><code>-PE</code></td>
+<td>通过使用“ICMP Echo 请求”对目标执行 ping 扫描。</td>
+</tr>
+<tr>
+<td><code>--reason</code></td>
+<td>显示特定结果的原因。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>我们在这里看到确实确实通过and单独<code>Nmap</code>检测了宿主是否存活。要禁用 ARP 请求并使用所需的扫描我们的目标，我们可以通过设置“ ”选项来禁用 ARP ping。然后我们可以再次扫描我们的目标并查看发送和接收的数据包。<code>ARP request``ARP reply``ICMP echo requests``--disable-arp-ping</code></p>
+<p>扫描网络范围</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA host -PE --packet-trace --disable-arp-ping 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 00:12 CEST
+SENT (0.0107s) ICMP [10.10.14.2 &gt; 10.129.2.18 Echo request (type=8/code=0) id=13607 seq=0] IP [ttl=255 id=23541 iplen=28 ]
+RCVD (0.0152s) ICMP [10.129.2.18 &gt; 10.10.14.2 Echo reply (type=0/code=0) id=13607 seq=0] IP [ttl=128 id=40622 iplen=28 ]
+Nmap scan report for 10.129.2.18
+Host is up (0.086s latency).
+MAC Address: DE:AD:00:00:BE:EF
+Nmap done: 1 IP address (1 host up) scanned in 0.11 seconds
+</code></pre>
+<p>我们已经在“ <code>Learning Process</code>，”中提到，在本模块的开头，注意细节是必不可少的。一个<code>ICMP echo request</code>可以帮助我们确定我们的目标是否活着并识别它的系统。有关主机发现的更多策略，请访问：</p>
+<p>https://nmap.org/book/host-discovery-strategies.html</p>
+<h3 id="_9">主机和端口扫描</h3>
+<p>必须了解我们使用的工具如何工作以及它如何执行和处理不同的功能。只有知道结果的含义和获得方式，我们才能理解结果。因此，我们将仔细研究和分析一些扫描方法。在我们发现我们的目标是活的之后，我们想得到一个更准确的系统图。我们需要的信息包括：</p>
+<ul>
+<li>开放端口及其服务</li>
+<li>服务版本</li>
+<li>服务提供的信息</li>
+<li>操作系统</li>
+</ul>
+<p>对于一个被扫描的端口，我们总共可以获得6种不同的状态：</p>
+<table>
+<thead>
+<tr>
+<th><strong>状态</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>open</code></td>
+<td>这表明已建立与扫描端口的连接。这些连接可以是<strong>TCP 连接</strong>、<strong>UDP 数据报</strong>以及<strong>SCTP 关联</strong>。</td>
+</tr>
+<tr>
+<td><code>closed</code></td>
+<td>当端口显示为关闭时，TCP 协议表明我们收到的数据包包含一个<code>RST</code>标志。这种扫描方法也可以用来判断我们的目标是否还活着。</td>
+</tr>
+<tr>
+<td><code>filtered</code></td>
+<td>Nmap 无法正确识别扫描的端口是打开还是关闭，因为目标没有为该端口返回任何响应，或者我们从目标获得错误代码。</td>
+</tr>
+<tr>
+<td><code>unfiltered</code></td>
+<td>端口的这种状态只在<strong>TCP-ACK</strong>扫描时出现，表示端口可以访问，但无法判断是open还是closed。</td>
+</tr>
+<tr>
+<td><code>open|filtered</code></td>
+<td>如果我们没有得到特定端口的响应，<code>Nmap</code>将把它设置为该状态。这表明防火墙或数据包过滤器可能会保护该端口。</td>
+</tr>
+<tr>
+<td><code>closed|filtered</code></td>
+<td>这种状态只出现在<strong>IP ID空闲</strong>扫描中，表示无法确定扫描的端口是否被防火墙关闭或过滤。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tcp">发现开放的 TCP 端口</h4>
+<p>默认情况下，<code>Nmap</code>使用 SYN 扫描 ( <code>-sS</code>) 扫描前 1000 个 TCP 端口。由于创建原始 TCP 数据包需要套接字权限，因此当我们以 root 身份运行时，此 SYN 扫描仅设置为默认值。<code>-sT</code>否则，默认执行TCP 扫描 ( )。这意味着如果我们不定义端口和扫描方法，这些参数会自动设置。我们可以通过扫描所有端口 ( <code>-p 22,25,80,139,445</code>) 以及定义快速端口扫描，通过扫描所有端口 ( <code>-p 22-445</code>)<code>--top-ports=10</code>以及定义快速端口扫描，其中包含顶级100 个端口 ( )。<code>Nmap``-p-``-F</code></p>
+<h5 id="10-tcp">扫描前 10 个 TCP 端口</h5>
+<p>扫描前 10 个 TCP 端口</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 --top-ports=10 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 15:36 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.021s latency).
+
+PORT     STATE    SERVICE
+21/tcp   closed   ftp
+22/tcp   open     ssh
+23/tcp   closed   telnet
+25/tcp   open     smtp
+80/tcp   open     http
+110/tcp  open     pop3
+139/tcp  filtered netbios-ssn
+443/tcp  closed   https
+445/tcp  filtered microsoft-ds
+3389/tcp closed   ms-wbt-server
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 1.44 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>--top-ports=10</code></td>
+<td>扫描已定义为最频繁的指定顶级端口。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>我们看到我们只扫描了目标的前 10 个 TCP 端口，并<code>Nmap</code>相应地显示它们的状态。如果我们跟踪<code>Nmap</code>发送的数据包，我们将看到目标发送回给我们的<code>RST</code>标志。<code>TCP port 21</code>为了清楚地了解 SYN 扫描，我们禁用 ICMP 回显请求 ( <code>-Pn</code>)、DNS 解析 ( <code>-n</code>) 和 ARP ping 扫描 ( <code>--disable-arp-ping</code>)。</p>
+<h5 id="nmap-">Nmap - 跟踪数据包</h5>
+<p>Nmap - 跟踪数据包</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 21 --packet-trace -Pn -n --disable-arp-ping
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 15:39 CEST
+SENT (0.0429s) TCP 10.10.14.2:63090 &gt; 10.129.2.28:21 S ttl=56 id=57322 iplen=44  seq=1699105818 win=1024 &lt;mss 1460&gt;
+RCVD (0.0573s) TCP 10.129.2.28:21 &gt; 10.10.14.2:63090 RA ttl=64 id=0 iplen=40  seq=0 win=0
+Nmap scan report for 10.11.1.28
+Host is up (0.014s latency).
+
+PORT   STATE  SERVICE
+21/tcp closed ftp
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.07 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 21</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>从 SENT 行可以看出，我们 ( )向我们的目标 ( )<code>10.10.14.2</code>发送了一个带有<code>SYN</code>标志 ( ) 的 TCP 数据包。在下一个 RCVD 行中，我们可以看到目标使用包含和标志 ( ) 的 TCP 数据包进行响应。和标志用于确认收到 TCP 数据包 ( ) 和结束 TCP 会话 ( )。<code>S``10.129.2.28``RST``ACK``RA``RST``ACK``ACK``RST</code></p>
+<h5 id="_10">请求</h5>
+<table>
+<thead>
+<tr>
+<th><strong>信息</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SENT (0.0429s)</code></td>
+<td>表示Nmap的SENT操作，向目标发送数据包。</td>
+</tr>
+<tr>
+<td><code>TCP</code></td>
+<td>显示用于与目标端口交互的协议。</td>
+</tr>
+<tr>
+<td><code>10.10.14.2:63090 &gt;</code></td>
+<td>表示我们的 IPv4 地址和源端口，Nmap 将使用它们来发送数据包。</td>
+</tr>
+<tr>
+<td><code>10.129.2.28:21</code></td>
+<td>显示目标 IPv4 地址和目标端口。</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>发送的 TCP 数据包的 SYN 标志。</td>
+</tr>
+<tr>
+<td><code>ttl=56 id=57322 iplen=44 seq=1699105818 win=1024 mss 1460</code></td>
+<td>附加的 TCP 标头参数。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="_11">响应</h5>
+<table>
+<thead>
+<tr>
+<th><strong>信息</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RCVD (0.0573s)</code></td>
+<td>指示从目标接收到的数据包。</td>
+</tr>
+<tr>
+<td><code>TCP</code></td>
+<td>显示正在使用的协议。</td>
+</tr>
+<tr>
+<td><code>10.129.2.28:21 &gt;</code></td>
+<td>表示目标 IPv4 地址和源端口，将用于回复。</td>
+</tr>
+<tr>
+<td><code>10.10.14.2:63090</code></td>
+<td>显示我们的 IPv4 地址和将回复的端口。</td>
+</tr>
+<tr>
+<td><code>RA</code></td>
+<td>发送的 TCP 数据包的 RST 和 ACK 标志。</td>
+</tr>
+<tr>
+<td><code>ttl=64 id=0 iplen=40 seq=0 win=0</code></td>
+<td>附加的 TCP 标头参数。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="_12">连接扫描</h5>
+<p>Nmap <a href="https://nmap.org/book/scan-methods-connect-scan.html">TCP 连接扫描</a>( <code>-sT</code>) 使用 TCP 三向握手来确定目标主机上的特定端口是打开还是关闭。扫描<code>SYN</code>向目标端口发送数据包并等待响应。如果目标端口以<code>SYN-ACK</code>数据包响应，则认为它是打开的；如果它以<code>RST</code>数据包响应，则认为它是关闭的。</p>
+<p>扫描<code>Connect</code>很有用，因为它是确定端口状态的最准确方法，也是最隐秘的方法。与 SYN 扫描等其他类型的扫描不同，Connect 扫描不会在目标主机上留下任何未完成的连接或未发送的数据包，这使得它不太可能被入侵检测系统 (IDS) 或入侵防御系统 (IPS) 检测到). 当我们想要映射网络并且不想干扰其背后运行的服务时，它很有用，因此造成的影响最小，有时被认为是一种更礼貌的扫描方法。</p>
+<p>当目标主机具有丢弃传入数据包但允许传出数据包的个人防火墙时，它也很有用。在这种情况下，连接扫描可以绕过防火墙并准确确定目标端口的状态。但是，请务必注意，连接扫描比其他类型的扫描慢，因为它要求扫描器在发送每个数据包后等待目标的响应，如果目标繁忙或无响应，这可能需要一些时间。</p>
+<h5 id="tcp-443">在 TCP 端口 443 上进行连接扫描</h5>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 443 --packet-trace --disable-arp-ping -Pn -n --reason -sT 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 16:26 CET
+CONN (0.0385s) TCP localhost &gt; 10.129.2.28:443 =&gt; Operation now in progress
+CONN (0.0396s) TCP localhost &gt; 10.129.2.28:443 =&gt; Connected
+Nmap scan report for 10.129.2.28
+Host is up, received user-set (0.013s latency).
+
+PORT    STATE SERVICE REASON
+443/tcp open  https   syn-ack
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+</code></pre>
+<hr />
+<h4 id="_13">过滤端口</h4>
+<p>当端口显示为已过滤时，可能有多种原因。在大多数情况下，防火墙设置了特定的规则来处理特定的连接。数据包可以是<code>dropped</code>, 或<code>rejected</code>。当一个数据包被丢弃，<code>Nmap</code>没有收到来自我们目标的响应，默认情况下，重试率 ( <code>--max-retries</code>) 设置为 1。这意味着<code>Nmap</code>将重新发送请求到目标端口，以确定前一个数据包是否被意外错误处理。</p>
+<p>让我们看一个示例，其中防火墙<code>drops</code>对我们发送的 TCP 数据包进行端口扫描。因此我们扫描 TCP 端口<strong>139</strong>，它已经显示为已过滤。为了能够跟踪我们发送的数据包是如何处理的，我们再次停用 ICMP 回显请求 ( <code>-Pn</code>)、DNS 解析 ( <code>-n</code>) 和 ARP ping 扫描 ( )。<code>--disable-arp-ping</code></p>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 139 --packet-trace -n --disable-arp-ping -Pn
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 15:45 CEST
+SENT (0.0381s) TCP 10.10.14.2:60277 &gt; 10.129.2.28:139 S ttl=47 id=14523 iplen=44  seq=4175236769 win=1024 &lt;mss 1460&gt;
+SENT (1.0411s) TCP 10.10.14.2:60278 &gt; 10.129.2.28:139 S ttl=45 id=7372 iplen=44  seq=4175171232 win=1024 &lt;mss 1460&gt;
+Nmap scan report for 10.129.2.28
+Host is up.
+
+PORT    STATE    SERVICE
+139/tcp filtered netbios-ssn
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 2.06 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 139</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>我们在上次扫描中看到<code>Nmap</code>发送了两个带有 SYN 标志的 TCP 数据包。<code>2.06s</code>通过扫描的持续时间 ( )，我们可以看出它花费的时间比之前的 ( <code>~0.05s</code>) 长得多。如果防火墙拒绝数据包，情况就不同了。为此，我们查看 TCP 端口<code>445</code>，它由防火墙的此类规则相应地处理。</p>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 445 --packet-trace -n --disable-arp-ping -Pn
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 15:55 CEST
+SENT (0.0388s) TCP 10.129.2.28:52472 &gt; 10.129.2.28:445 S ttl=49 id=21763 iplen=44  seq=1418633433 win=1024 &lt;mss 1460&gt;
+RCVD (0.0487s) ICMP [10.129.2.28 &gt; 10.129.2.28 Port 445 unreachable (type=3/code=3) ] IP [ttl=64 id=20998 iplen=72 ]
+Nmap scan report for 10.129.2.28
+Host is up (0.0099s latency).
+
+PORT    STATE    SERVICE
+445/tcp filtered microsoft-ds
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.05 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 445</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+</tbody>
+</table>
+<p>作为响应，我们收到<code>ICMP</code>带有<code>type 3</code>和 的回复<code>error code 3</code>，这表明无法访问所需的主机。然而，如果我们知道主机是活的，我们可以强烈假设这个端口上的防火墙拒绝了数据包，我们稍后必须仔细查看这个端口。</p>
+<hr />
+<h4 id="udp">发现开放的 UDP 端口</h4>
+<p>有些系统管理员有时会忘记过滤 TCP 端口之外的 UDP 端口。由于<code>UDP</code>是一个<code>stateless protocol</code>并且不需要像 TCP 这样的三向握手。我们没有收到任何确认。因此，超时时间长得多，使整个<code>UDP scan</code>( <code>-sU</code>) 比<code>TCP scan</code>( <code>-sS</code>) 慢得多。</p>
+<p>让我们看一个 UDP 扫描 ( ) 的示例<code>-sU</code>以及它给我们的结果。</p>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -F -sU
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 16:01 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.059s latency).
+Not shown: 95 closed ports
+PORT     STATE         SERVICE
+68/udp   open|filtered dhcpc
+137/udp  open          netbios-ns
+138/udp  open|filtered netbios-dgm
+631/udp  open|filtered ipp
+5353/udp open          zeroconf
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 98.07 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>扫描前 100 个端口。</td>
+</tr>
+<tr>
+<td><code>-sU</code></td>
+<td>执行 UDP 扫描。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>这样做的另一个缺点是我们经常得不到响应，因为<code>Nmap</code>向扫描的 UDP 端口发送空数据报，我们收不到任何响应。所以我们无法确定 UDP 数据包是否已经到达。如果 UDP 端口是<code>open</code>，我们只有在应用程序配置为这样做时才会收到响应。</p>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -sU -Pn -n --disable-arp-ping --packet-trace -p 137 --reason 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 16:15 CEST
+SENT (0.0367s) UDP 10.10.14.2:55478 &gt; 10.129.2.28:137 ttl=57 id=9122 iplen=78
+RCVD (0.0398s) UDP 10.129.2.28:137 &gt; 10.10.14.2:55478 ttl=64 id=13222 iplen=257
+Nmap scan report for 10.129.2.28
+Host is up, received user-set (0.0031s latency).
+
+PORT    STATE SERVICE    REASON
+137/udp open  netbios-ns udp-response ttl 64
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-sU</code></td>
+<td>执行 UDP 扫描。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-p 137</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--reason</code></td>
+<td>显示端口处于特定状态的原因。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>如果我们收到一个带有（端口不可达）的 ICMP 响应<code>error code 3</code>，我们就知道该端口确实是<code>closed</code>。</p>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -sU -Pn -n --disable-arp-ping --packet-trace -p 100 --reason 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 16:25 CEST
+SENT (0.0445s) UDP 10.10.14.2:63825 &gt; 10.129.2.28:100 ttl=57 id=29925 iplen=28
+RCVD (0.1498s) ICMP [10.129.2.28 &gt; 10.10.14.2 Port unreachable (type=3/code=3) ] IP [ttl=64 id=11903 iplen=56 ]
+Nmap scan report for 10.129.2.28
+Host is up, received user-set (0.11s latency).
+
+PORT    STATE  SERVICE REASON
+100/udp closed unknown port-unreach ttl 64
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in  0.15 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-sU</code></td>
+<td>执行 UDP 扫描。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-p 100</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--reason</code></td>
+<td>显示端口处于特定状态的原因。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>对于所有其他 ICMP 响应，扫描的端口标记为 ( <code>open|filtered</code>)。</p>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -sU -Pn -n --disable-arp-ping --packet-trace -p 138 --reason 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 16:32 CEST
+SENT (0.0380s) UDP 10.10.14.2:52341 &gt; 10.129.2.28:138 ttl=50 id=65159 iplen=28
+SENT (1.0392s) UDP 10.10.14.2:52342 &gt; 10.129.2.28:138 ttl=40 id=24444 iplen=28
+Nmap scan report for 10.129.2.28
+Host is up, received user-set.
+
+PORT    STATE         SERVICE     REASON
+138/udp open|filtered netbios-dgm no-response
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 2.06 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-sU</code></td>
+<td>执行 UDP 扫描。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-p 138</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--reason</code></td>
+<td>显示端口处于特定状态的原因。</td>
+</tr>
+</tbody>
+</table>
+<p>扫描端口的另一种便捷方法是<code>-sV</code>用于从打开的端口获取其他可用信息的选项。此方法可以识别版本、服务名称和有关目标的详细信息。</p>
+<p>在 TCP 端口 443 上进行连接扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -Pn -n --disable-arp-ping --packet-trace -p 445 --reason  -sV
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-11-04 11:10 GMT
+SENT (0.3426s) TCP 10.10.14.2:44641 &gt; 10.129.2.28:445 S ttl=55 id=43401 iplen=44  seq=3589068008 win=1024 &lt;mss 1460&gt;
+RCVD (0.3556s) TCP 10.129.2.28:445 &gt; 10.10.14.2:44641 SA ttl=63 id=0 iplen=44  seq=2881527699 win=29200 &lt;mss 1337&gt;
+NSOCK INFO [0.4980s] nsock_iod_new2(): nsock_iod_new (IOD #1)
+NSOCK INFO [0.4980s] nsock_connect_tcp(): TCP connection requested to 10.129.2.28:445 (IOD #1) EID 8
+NSOCK INFO [0.5130s] nsock_trace_handler_callback(): Callback: CONNECT SUCCESS for EID 8 [10.129.2.28:445]
+Service scan sending probe NULL to 10.129.2.28:445 (tcp)
+NSOCK INFO [0.5130s] nsock_read(): Read request from IOD #1 [10.129.2.28:445] (timeout: 6000ms) EID 18
+NSOCK INFO [6.5190s] nsock_trace_handler_callback(): Callback: READ TIMEOUT for EID 18 [10.129.2.28:445]
+Service scan sending probe SMBProgNeg to 10.129.2.28:445 (tcp)
+NSOCK INFO [6.5190s] nsock_write(): Write request for 168 bytes to IOD #1 EID 27 [10.129.2.28:445]
+NSOCK INFO [6.5190s] nsock_read(): Read request from IOD #1 [10.129.2.28:445] (timeout: 5000ms) EID 34
+NSOCK INFO [6.5190s] nsock_trace_handler_callback(): Callback: WRITE SUCCESS for EID 27 [10.129.2.28:445]
+NSOCK INFO [6.5320s] nsock_trace_handler_callback(): Callback: READ SUCCESS for EID 34 [10.129.2.28:445] (135 bytes)
+Service scan match (Probe SMBProgNeg matched with SMBProgNeg line 13836): 10.129.2.28:445 is netbios-ssn.  Version: |Samba smbd|3.X - 4.X|workgroup: WORKGROUP|
+NSOCK INFO [6.5320s] nsock_iod_delete(): nsock_iod_delete (IOD #1)
+Nmap scan report for 10.129.2.28
+Host is up, received user-set (0.013s latency).
+
+PORT    STATE SERVICE     REASON         VERSION
+445/tcp open  netbios-ssn syn-ack ttl 63 Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+Service Info: Host: Ubuntu
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 6.55 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-p 445</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--reason</code></td>
+<td>显示端口处于特定状态的原因。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>执行服务扫描。</td>
+</tr>
+</tbody>
+</table>
+<p>我们可以在以下位置找到有关端口扫描技术的更多信息：<a href="https://nmap.org/book/man-port-scanning-techniques.html">https ://nmap.org/book/man-port-scanning-techniques.html</a></p>
+<h3 id="_14">保存结果</h3>
+<h4 id="_15">不同的格式</h4>
+<p>当我们运行各种扫描时，我们应该始终保存结果。稍后我们可以使用这些来检查我们使用的不同扫描方法之间的差异。 <code>Nmap</code>可以以 3 种不同的格式保存结果。</p>
+<ul>
+<li>正常输出( <code>-oN</code>) 带<code>.nmap</code>文件扩展名</li>
+<li>带有文件扩展名的Grepable 输出 ( <code>-oG</code>)<code>.gnmap</code></li>
+<li>带有文件扩展名的XML 输出 ( <code>-oX</code>)<code>.xml</code></li>
+</ul>
+<p>我们还可以指定选项 ( <code>-oA</code>) 以所有格式保存结果。该命令可能如下所示：</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p- -oA target
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-16 12:14 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.0091s latency).
+Not shown: 65525 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+25/tcp    open  smtp
+80/tcp    open  http
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 10.22 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p-</code></td>
+<td>扫描所有端口。</td>
+</tr>
+<tr>
+<td><code>-oA target</code></td>
+<td>以所有格式保存结果，每个文件的名称以“目标”开头。</td>
+</tr>
+</tbody>
+</table>
+<p>如果没有给出完整路径，结果将存储在我们当前所在的目录中。接下来，我们看看为<code>Nmap</code>我们创建的不同格式。</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ ls
+
+target.gnmap target.xml  target.nmap
+</code></pre>
+<h5 id="_16">正常输出</h5>
+<p>正常输出</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ cat target.nmap
+
+# Nmap 7.80 scan initiated Tue Jun 16 12:14:53 2020 as: nmap -p- -oA target 10.129.2.28
+Nmap scan report for 10.129.2.28
+Host is up (0.053s latency).
+Not shown: 4 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+25/tcp open  smtp
+80/tcp open  http
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+# Nmap done at Tue Jun 16 12:15:03 2020 -- 1 IP address (1 host up) scanned in 10.22 seconds
+</code></pre>
+<h5 id="grepable">Grepable 输出</h5>
+<p>Grepable 输出</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ cat target.gnmap
+
+# Nmap 7.80 scan initiated Tue Jun 16 12:14:53 2020 as: nmap -p- -oA target 10.129.2.28
+Host: 10.129.2.28 ()    Status: Up
+Host: 10.129.2.28 ()    Ports: 22/open/tcp//ssh///, 25/open/tcp//smtp///, 80/open/tcp//http///  Ignored State: closed (4)
+# Nmap done at Tue Jun 16 12:14:53 2020 -- 1 IP address (1 host up) scanned in 10.22 seconds
+</code></pre>
+<h5 id="xml">XML 输出</h5>
+<p>XML 输出</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ cat target.xml
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE nmaprun&gt;
+&lt;?xml-stylesheet href=&quot;file:///usr/local/bin/../share/nmap/nmap.xsl&quot; type=&quot;text/xsl&quot;?&gt;
+&lt;!-- Nmap 7.80 scan initiated Tue Jun 16 12:14:53 2020 as: nmap -p- -oA target 10.129.2.28 --&gt;
+&lt;nmaprun scanner=&quot;nmap&quot; args=&quot;nmap -p- -oA target 10.129.2.28&quot; start=&quot;12145301719&quot; startstr=&quot;Tue Jun 16 12:15:03 2020&quot; version=&quot;7.80&quot; xmloutputversion=&quot;1.04&quot;&gt;
+&lt;scaninfo type=&quot;syn&quot; protocol=&quot;tcp&quot; numservices=&quot;65535&quot; services=&quot;1-65535&quot;/&gt;
+&lt;verbose level=&quot;0&quot;/&gt;
+&lt;debugging level=&quot;0&quot;/&gt;
+&lt;host starttime=&quot;12145301719&quot; endtime=&quot;12150323493&quot;&gt;&lt;status state=&quot;up&quot; reason=&quot;arp-response&quot; reason_ttl=&quot;0&quot;/&gt;
+&lt;address addr=&quot;10.129.2.28&quot; addrtype=&quot;ipv4&quot;/&gt;
+&lt;address addr=&quot;DE:AD:00:00:BE:EF&quot; addrtype=&quot;mac&quot; vendor=&quot;Intel Corporate&quot;/&gt;
+&lt;hostnames&gt;
+&lt;/hostnames&gt;
+&lt;ports&gt;&lt;extraports state=&quot;closed&quot; count=&quot;4&quot;&gt;
+&lt;extrareasons reason=&quot;resets&quot; count=&quot;4&quot;/&gt;
+&lt;/extraports&gt;
+&lt;port protocol=&quot;tcp&quot; portid=&quot;22&quot;&gt;&lt;state state=&quot;open&quot; reason=&quot;syn-ack&quot; reason_ttl=&quot;64&quot;/&gt;&lt;service name=&quot;ssh&quot; method=&quot;table&quot; conf=&quot;3&quot;/&gt;&lt;/port&gt;
+&lt;port protocol=&quot;tcp&quot; portid=&quot;25&quot;&gt;&lt;state state=&quot;open&quot; reason=&quot;syn-ack&quot; reason_ttl=&quot;64&quot;/&gt;&lt;service name=&quot;smtp&quot; method=&quot;table&quot; conf=&quot;3&quot;/&gt;&lt;/port&gt;
+&lt;port protocol=&quot;tcp&quot; portid=&quot;80&quot;&gt;&lt;state state=&quot;open&quot; reason=&quot;syn-ack&quot; reason_ttl=&quot;64&quot;/&gt;&lt;service name=&quot;http&quot; method=&quot;table&quot; conf=&quot;3&quot;/&gt;&lt;/port&gt;
+&lt;/ports&gt;
+&lt;times srtt=&quot;52614&quot; rttvar=&quot;75640&quot; to=&quot;355174&quot;/&gt;
+&lt;/host&gt;
+&lt;runstats&gt;&lt;finished time=&quot;12150323493&quot; timestr=&quot;Tue Jun 16 12:14:53 2020&quot; elapsed=&quot;10.22&quot; summary=&quot;Nmap done at Tue Jun 16 12:15:03 2020; 1 IP address (1 host up) scanned in 10.22 seconds&quot; exit=&quot;success&quot;/&gt;&lt;hosts up=&quot;1&quot; down=&quot;0&quot; total=&quot;1&quot;/&gt;
+&lt;/runstats&gt;
+&lt;/nmaprun&gt;
+</code></pre>
+<hr />
+<h4 id="_17">样式表</h4>
+<p>通过 XML 输出，我们可以轻松创建易于阅读的 HTML 报告，即使对于非技术人员也是如此。这在以后对文档非常有用，因为它以详细和清晰的方式展示了我们的结果。要将存储的结果从 XML 格式转换为 HTML，我们可以使用该工具<code>xsltproc</code>。</p>
+<p>XML 输出</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ xsltproc target.xml -o target.html
+</code></pre>
+<p>如果我们现在在浏览器中打开 HTML 文件，我们会看到清晰且结构化的结果展示。</p>
+<h5 id="nmap_2">Nmap报告</h5>
+<p><img alt="图像" src="https://academy.hackthebox.com/storage/modules/19/nmap-report.png" /></p>
+<p>有关输出格式的更多信息，请访问：<a href="https://nmap.org/book/output.html">https ://nmap.org/book/output.html</a></p>
+<h3 id="_18">服务枚举</h3>
+<p>对我们来说，尽可能准确地确定应用程序及其版本至关重要。我们可以使用此信息扫描已知漏洞，并在找到时分析该版本的源代码。确切的版本号使我们能够搜索适合目标服务和操作系统的更精确的漏洞利用。</p>
+<hr />
+<h4 id="_19">服务版本检测</h4>
+<p>建议首先执行快速端口扫描，这可以让我们大致了解可用端口。这会显着减少流量，这对我们来说是有利的，否则我们可能会被安全机制发现并阻止。我们可以先处理这些并在后台运行端口扫描，它会显示所有打开的端口 ( <code>-p-</code>)。我们可以使用版本扫描来扫描服务及其版本的特定端口（<code>-sV</code>）。</p>
+<p>完整的端口扫描需要相当长的时间。要查看扫描状态，我们可以在<code>[Space Bar]</code>扫描过程中按 ，这将导致<code>Nmap</code>向我们显示扫描状态。</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p- -sV
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 19:44 CEST
+[Space Bar]
+Stats: 0:00:03 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 3.64% done; ETC: 19:45 (0:00:53 remaining)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p-</code></td>
+<td>扫描所有端口。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>对指定端口进行服务版本检测。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>我们可以使用的另一个选项 ( <code>--stats-every=5s</code>) 是定义应显示状态的时间段。在这里我们可以指定秒数 ( <code>s</code>) 或分钟数 ( <code>m</code>)，在此之后我们想要获取状态。</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p- -sV --stats-every=5s
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 19:46 CEST
+Stats: 0:00:05 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 13.91% done; ETC: 19:49 (0:00:31 remaining)
+Stats: 0:00:10 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 39.57% done; ETC: 19:48 (0:00:15 remaining)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p-</code></td>
+<td>扫描所有端口。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>对指定端口进行服务版本检测。</td>
+</tr>
+<tr>
+<td><code>--stats-every=5s</code></td>
+<td>每 5 秒显示一次扫描进度。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>我们还可以增加<code>verbosity level</code>（<code>-v</code>/ <code>-vv</code>），这样在检测到端口时会直接显示给我们打开的端口<code>Nmap</code>。</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p- -sV -v 
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 20:03 CEST
+NSE: Loaded 45 scripts for scanning.
+Initiating ARP Ping Scan at 20:03
+Scanning 10.129.2.28 [1 port]
+Completed ARP Ping Scan at 20:03, 0.03s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 20:03
+Completed Parallel DNS resolution of 1 host. at 20:03, 0.02s elapsed
+Initiating SYN Stealth Scan at 20:03
+Scanning 10.129.2.28 [65535 ports]
+Discovered open port 995/tcp on 10.129.2.28
+Discovered open port 80/tcp on 10.129.2.28
+Discovered open port 993/tcp on 10.129.2.28
+Discovered open port 143/tcp on 10.129.2.28
+Discovered open port 25/tcp on 10.129.2.28
+Discovered open port 110/tcp on 10.129.2.28
+Discovered open port 22/tcp on 10.129.2.28
+&lt;SNIP&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p-</code></td>
+<td>扫描所有端口。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>对指定端口进行服务版本检测。</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>增加扫描的详细程度，显示更详细的信息。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="_20">横幅抓取</h4>
+<p>扫描完成后，我们将看到所有具有相应服务的 TCP 端口及其在系统上处于活动状态的版本。</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p- -sV
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 20:00 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.013s latency).
+Not shown: 65525 closed ports
+PORT      STATE    SERVICE      VERSION
+22/tcp    open     ssh          OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+25/tcp    open     smtp         Postfix smtpd
+80/tcp    open     http         Apache httpd 2.4.29 ((Ubuntu))
+110/tcp   open     pop3         Dovecot pop3d
+139/tcp   filtered netbios-ssn
+143/tcp   open     imap         Dovecot imapd (Ubuntu)
+445/tcp   filtered microsoft-ds
+993/tcp   open     ssl/imap     Dovecot imapd (Ubuntu)
+995/tcp   open     ssl/pop3     Dovecot pop3d
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+Service Info: Host:  inlane; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 91.73 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p-</code></td>
+<td>扫描所有端口。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>对指定端口进行服务版本检测。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>首先，<code>Nmap</code>查看扫描端口的横幅并将其打印出来。如果它无法通过横幅识别版本，<code>Nmap</code>则会尝试通过基于签名的匹配系统来识别它们，但这会显着增加扫描的持续时间。<code>Nmap</code>显示结果的一个缺点是自动扫描可能会遗漏一些信息，因为有时<code>Nmap</code>不知道如何处理它。让我们看一个这样的例子。</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p- -sV -Pn -n --disable-arp-ping --packet-trace
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-16 20:10 CEST
+&lt;SNIP&gt;
+NSOCK INFO [0.4200s] nsock_trace_handler_callback(): Callback: READ SUCCESS for EID 18 [10.129.2.28:25] (35 bytes): 220 inlane ESMTP Postfix (Ubuntu)..
+Service scan match (Probe NULL matched with NULL line 3104): 10.129.2.28:25 is smtp.  Version: |Postfix smtpd|||
+NSOCK INFO [0.4200s] nsock_iod_delete(): nsock_iod_delete (IOD #1)
+Nmap scan report for 10.129.2.28
+Host is up (0.076s latency).
+
+PORT   STATE SERVICE VERSION
+25/tcp open  smtp    Postfix smtpd
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+Service Info: Host:  inlane
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 0.47 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p-</code></td>
+<td>扫描所有端口。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>对指定端口进行服务版本检测。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>如果我们查看 的结果<code>Nmap</code>，我们可以看到端口的状态、服务名称和主机名。不过，让我们看看这里的这一行：</p>
+<ul>
+<li><code>NSOCK INFO [0.4200s] nsock_trace_handler_callback(): Callback: READ SUCCESS for EID 18 [10.129.2.28:25] (35 bytes): 220 inlane ESMTP Postfix (Ubuntu)..</code></li>
+</ul>
+<p>然后我们看到我们目标上的 SMTP 服务器给了我们比<code>Nmap</code>显示给我们更多的信息。因为在这里，我们看到的是 Linux 发行版<code>Ubuntu</code>。发生这种情况是因为，在成功的三次握手之后，服务器通常会发送一个标语以供识别。这用于让客户端知道它正在使用哪个服务。在网络级别，这发生<code>PSH</code>在 TCP 标头中的标志。但是，某些服务可能不会立即提供此类信息。也可以从相应服务中删除或操纵横幅。如果我们<code>manually</code>使用 连接到 SMTP 服务器<code>nc</code>，抓取横幅并使用 拦截网络流量<code>tcpdump</code>，我们可以看到<code>Nmap</code>没有显示给我们的内容。</p>
+<h5 id="_21">转储</h5>
+<p>转储</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo tcpdump -i eth0 host 10.10.14.2 and 10.129.2.28
+
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+</code></pre>
+<h5 id="_22">数控</h5>
+<p>数控</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$  nc -nv 10.129.2.28 25
+
+Connection to 10.129.2.28 port 25 [tcp/*] succeeded!
+220 inlane ESMTP Postfix (Ubuntu)
+</code></pre>
+<h5 id="tcpdump-">Tcpdump - 拦截的流量</h5>
+<p>Tcpdump - 拦截的流量</p>
+<pre><code class="language-shell-session">18:28:07.128564 IP 10.10.14.2.59618 &gt; 10.129.2.28.smtp: Flags [S], seq 1798872233, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 331260178 ecr 0,sackOK,eol], length 0
+18:28:07.255151 IP 10.129.2.28.smtp &gt; 10.10.14.2.59618: Flags [S.], seq 1130574379, ack 1798872234, win 65160, options [mss 1460,sackOK,TS val 1800383922 ecr 331260178,nop,wscale 7], length 0
+18:28:07.255281 IP 10.10.14.2.59618 &gt; 10.129.2.28.smtp: Flags [.], ack 1, win 2058, options [nop,nop,TS val 331260304 ecr 1800383922], length 0
+18:28:07.319306 IP 10.129.2.28.smtp &gt; 10.10.14.2.59618: Flags [P.], seq 1:36, ack 1, win 510, options [nop,nop,TS val 1800383985 ecr 331260304], length 35: SMTP: 220 inlane ESMTP Postfix (Ubuntu)
+18:28:07.319426 IP 10.10.14.2.59618 &gt; 10.129.2.28.smtp: Flags [.], ack 36, win 2058, options [nop,nop,TS val 331260368 ecr 1800383985], length 0
+</code></pre>
+<p>前三行向我们展示了三次握手。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.</td>
+<td><code>[SYN]</code></td>
+<td><code>18:28:07.128564 IP 10.10.14.2.59618 &gt; 10.129.2.28.smtp: Flags [S], &lt;SNIP&gt;</code></td>
+</tr>
+<tr>
+<td>2.</td>
+<td><code>[SYN-ACK]</code></td>
+<td><code>18:28:07.255151 IP 10.129.2.28.smtp &gt; 10.10.14.2.59618: Flags [S.], &lt;SNIP&gt;</code></td>
+</tr>
+<tr>
+<td>3.</td>
+<td><code>[ACK]</code></td>
+<td><code>18:28:07.255281 IP 10.10.14.2.59618 &gt; 10.129.2.28.smtp: Flags [.], &lt;SNIP&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>之后，目标 SMTP 服务器向我们发送一个带有<code>PSH</code>和<code>ACK</code>标志的 TCP 数据包，其中<code>PSH</code>声明目标服务器正在向我们发送数据，同时<code>ACK</code>通知我们所有需要的数据已发送。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.</td>
+<td><code>[PSH-ACK]</code></td>
+<td><code>18:28:07.319306 IP 10.129.2.28.smtp &gt; 10.10.14.2.59618: Flags [P.], &lt;SNIP&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>我们发送的最后一个 TCP 数据包以<code>ACK</code>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.</td>
+<td><code>[ACK]</code></td>
+<td><code>18:28:07.319426 IP 10.10.14.2.59618 &gt; 10.129.2.28.smtp: Flags [.], &lt;SNIP&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="nmap_3">Nmap 脚本引擎</h3>
+<p>Nmap 脚本引擎 ( <code>NSE</code>) 是<code>Nmap</code>. 它为我们提供了在 Lua 中创建脚本以与某些服务交互的可能性。这些脚本总共可以分为 14 类：</p>
+<table>
+<thead>
+<tr>
+<th><strong>类别</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth</code></td>
+<td>身份验证凭据的确定。</td>
+</tr>
+<tr>
+<td><code>broadcast</code></td>
+<td>用于通过广播发现主机的脚本和发现的主机可以自动添加到剩余的扫描中。</td>
+</tr>
+<tr>
+<td><code>brute</code></td>
+<td>执行尝试通过使用凭据进行暴力破解来登录相应服务的脚本。</td>
+</tr>
+<tr>
+<td><code>default</code></td>
+<td>使用该<code>-sC</code>选项执行的默认脚本。</td>
+</tr>
+<tr>
+<td><code>discovery</code></td>
+<td>评估无障碍服务。</td>
+</tr>
+<tr>
+<td><code>dos</code></td>
+<td>这些脚本用于检查服务是否存在拒绝服务漏洞，并且由于会损害服务而较少使用。</td>
+</tr>
+<tr>
+<td><code>exploit</code></td>
+<td>此类脚本会尝试利用扫描端口的已知漏洞。</td>
+</tr>
+<tr>
+<td><code>external</code></td>
+<td>使用外部服务进行进一步处理的脚本。</td>
+</tr>
+<tr>
+<td><code>fuzzer</code></td>
+<td>这使用脚本通过发送不同的字段来识别漏洞和意外数据包处理，这可能会花费很多时间。</td>
+</tr>
+<tr>
+<td><code>intrusive</code></td>
+<td>可能对目标系统产生负面影响的侵入性脚本。</td>
+</tr>
+<tr>
+<td><code>malware</code></td>
+<td>检查某些恶意软件是否感染了目标系统。</td>
+</tr>
+<tr>
+<td><code>safe</code></td>
+<td>不执行侵入性和破坏性访问的防御脚本。</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>服务检测扩展。</td>
+</tr>
+<tr>
+<td><code>vuln</code></td>
+<td>特定漏洞的识别。</td>
+</tr>
+</tbody>
+</table>
+<p>我们有几种方法可以在<code>Nmap</code>.</p>
+<h4 id="_23">默认脚本</h4>
+<p>默认脚本</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap &lt;target&gt; -sC
+</code></pre>
+<h4 id="_24">特定脚本类别</h4>
+<p>特定脚本类别</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap &lt;target&gt; --script &lt;category&gt;
+</code></pre>
+<h4 id="_25">定义脚本</h4>
+<p>定义脚本</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap &lt;target&gt; --script &lt;script-name&gt;,&lt;script-name&gt;,...
+</code></pre>
+<p>例如，让我们继续使用目标 SMTP 端口并查看我们使用两个定义的脚本获得的结果。</p>
+<h4 id="nmap-_1">Nmap - 指定脚本</h4>
+<p>Nmap - 指定脚本</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 25 --script banner,smtp-commands
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-16 23:21 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.050s latency).
+
+PORT   STATE SERVICE
+25/tcp open  smtp
+|_banner: 220 inlane ESMTP Postfix (Ubuntu)
+|_smtp-commands: inlane, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8,
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 25</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>--script banner,smtp-commands</code></td>
+<td>使用指定的 NSE 脚本。</td>
+</tr>
+</tbody>
+</table>
+<p>我们看到使用'banner'脚本可以识别Linux的<strong>Ubuntu发行版。</strong>该<code>smtp-commands</code>脚本向我们展示了我们可以通过与目标 SMTP 服务器交互来使用哪些命令。在此示例中，此类信息可能会帮助我们找出目标上的现有用户。<code>Nmap</code>还使我们能够使用攻击性选项 ( <code>-A</code>) 扫描我们的目标。这会使用多个选项扫描目标，如服务检测 ( <code>-sV</code>)、操作系统检测 ( <code>-O</code>)、跟踪路由 ( <code>--traceroute</code>) 和默认 NSE 脚本 ( <code>-sC</code>)。</p>
+<h4 id="nmap-_2">Nmap - 攻击性扫描</h4>
+<p>Nmap - 攻击性扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 80 -A
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-17 01:38 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.012s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-generator: WordPress 5.3.4
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: blog.inlanefreight.com
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Linux 2.6.32 (96%), Linux 3.2 - 4.9 (96%), Linux 2.6.32 - 3.10 (96%), Linux 3.4 - 3.10 (95%), Linux 3.1 (95%), Linux 3.2 (95%), 
+AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%), Synology DiskStation Manager 5.2-5644 (94%), Netgear RAIDiator 4.2.28 (94%), 
+Linux 2.6.32 - 2.6.35 (94%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 1 hop
+
+TRACEROUTE
+HOP RTT      ADDRESS
+1   11.91 ms 10.129.2.28
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 11.36 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 25</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>-A</code></td>
+<td>执行服务检测、操作系统检测、路由跟踪并使用默认脚本扫描目标。</td>
+</tr>
+</tbody>
+</table>
+<p>借助使用的扫描选项 ( )，我们找出了系统上运行的是<code>-A</code>哪种 Web 服务器 ( )，使用了哪个 Web 应用程序 ( )，以及网页的标题 ( )。此外，表明它很可能是( ) 操作系统。<code>Apache 2.4.29``WordPress 5.3.4``blog.inlanefreight.com``Nmap``Linux``96%</code></p>
+<hr />
+<h4 id="_26">漏洞评估</h4>
+<p>现在让我们转到 HTTP 端口 80，看看我们可以使用<code>vuln</code>来自的类别找到哪些信息和漏洞<code>NSE</code>。</p>
+<h5 id="nmap-_3">Nmap - 漏洞类别</h5>
+<p>Nmap - 漏洞类别</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 80 -sV --script vuln 
+
+Nmap scan report for 10.129.2.28
+Host is up (0.036s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-enum:
+|   /wp-login.php: Possible admin folder
+|   /readme.html: Wordpress version: 2
+|   /: WordPress version: 5.3.4
+|   /wp-includes/images/rss.png: Wordpress version 2.2 found.
+|   /wp-includes/js/jquery/suggest.js: Wordpress version 2.5 found.
+|   /wp-includes/images/blank.gif: Wordpress version 2.6 found.
+|   /wp-includes/js/comment-reply.js: Wordpress version 2.7 found.
+|   /wp-login.php: Wordpress login page.
+|   /wp-admin/upgrade.php: Wordpress login page.
+|_  /readme.html: Interesting, a readme.
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-wordpress-users:
+| Username found: admin
+|_Search stopped at ID #25. Increase the upper limit if necessary with 'http-wordpress-users.limit'
+| vulners:
+|   cpe:/a:apache:http_server:2.4.29:
+|       CVE-2019-0211   7.2 https://vulners.com/cve/CVE-2019-0211
+|       CVE-2018-1312   6.8 https://vulners.com/cve/CVE-2018-1312
+|       CVE-2017-15715  6.8 https://vulners.com/cve/CVE-2017-15715
+&lt;SNIP&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 80</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>-sV</code></td>
+<td>对指定端口进行服务版本检测。</td>
+</tr>
+<tr>
+<td><code>--script vuln</code></td>
+<td>使用指定类别中的所有相关脚本。</td>
+</tr>
+</tbody>
+</table>
+<p>用于上次扫描的脚本与网络服务器及其网络应用程序交互，以查找有关其版本的更多信息，并检查各种数据库以查看是否存在已知漏洞。我们可以在以下位置找到有关 NSE 脚本和相应类别的更多信息： https: <a href="https://nmap.org/nsedoc/index.html">//nmap.org/nsedoc/index.html</a></p>
+<h3 id="_27">表现</h3>
+<p>当我们需要扫描广泛的网络或处理低网络带宽时，扫描性能起着重要作用。我们可以使用各种选项来判断测试数据包应该<code>Nmap</code>有多快 ( <code>-T &lt;1-5&gt;</code>)、频率 ( <code>--min-parallelism &lt;number&gt;</code>)、超时 ( <code>--max-rtt-timeout &lt;time&gt;</code>)、应该同时发送多少数据包 ( ) 以及被扫描端口的<code>--min-rate &lt;number&gt;</code>重试次数 ( )<code>--max-retries &lt;number&gt;</code>应该扫描目标。</p>
+<hr />
+<h4 id="_28">超时</h4>
+<p>当 Nmap 发送数据包时，需要一些时间 ( <code>Round-Trip-Time</code>- <code>RTT</code>) 才能从扫描的端口接收到响应。通常，<code>Nmap</code>以 100 毫秒的高超时 ( <code>--min-RTT-timeout</code>) 开始。让我们来看一个示例，扫描具有 256 台主机的整个网络，包括前 100 个端口。</p>
+<h5 id="_29">默认扫描</h5>
+<p>默认扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F
+
+&lt;SNIP&gt;
+Nmap done: 256 IP addresses (10 hosts up) scanned in 39.44 seconds
+</code></pre>
+<h5 id="rtt">优化 RTT</h5>
+<p>优化 RTT</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F --initial-rtt-timeout 50ms --max-rtt-timeout 100ms
+
+&lt;SNIP&gt;
+Nmap done: 256 IP addresses (8 hosts up) scanned in 12.29 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.0/24</code></td>
+<td>扫描指定的目标网络。</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>扫描前 100 个端口。</td>
+</tr>
+<tr>
+<td><code>--initial-rtt-timeout 50ms</code></td>
+<td>将指定的时间值设置为初始 RTT 超时。</td>
+</tr>
+<tr>
+<td><code>--max-rtt-timeout 100ms</code></td>
+<td>将指定的时间值设置为最大 RTT 超时。</td>
+</tr>
+</tbody>
+</table>
+<p>比较两次扫描，我们可以看到优化扫描少找到两台主机，但扫描只用了四分之一的时间。由此，我们可以得出结论，将初始 RTT 超时 ( <code>--initial-rtt-timeout</code>) 设置得太短可能会导致我们忽略主机。</p>
+<hr />
+<h4 id="_30">最大重试次数</h4>
+<p>另一种提高扫描速度的方法是指定发送数据包的重试率 ( <code>--max-retries</code>)。重试率的默认值为<code>10</code>，因此如果<code>Nmap</code>没有收到端口的响应，它将不再向该端口发送任何数据包并将被跳过。</p>
+<h5 id="_31">默认扫描</h5>
+<p>默认扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F | grep &quot;/tcp&quot; | wc -l
+
+23
+</code></pre>
+<h5 id="_32">减少重试</h5>
+<p>减少重试</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F --max-retries 0 | grep &quot;/tcp&quot; | wc -l
+
+21
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.0/24</code></td>
+<td>扫描指定的目标网络。</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>扫描前 100 个端口。</td>
+</tr>
+<tr>
+<td><code>--max-retries 0</code></td>
+<td>设置将在扫描期间执行的重试次数。</td>
+</tr>
+</tbody>
+</table>
+<p>同样，我们认识到加速也会对我们的结果产生负面影响，这意味着我们可能会忽略重要信息。</p>
+<hr />
+<h4 id="_33">费率</h4>
+<p>在白盒渗透测试中，我们可能会获得安全系统的白名单，以检查网络中的系统是否存在漏洞，而不仅仅是测试保护措施。如果我们知道网络带宽，我们可以使用发送数据包的速率，这会显着加快我们使用<code>Nmap</code>. 在设置发送数据包的最小速率 ( <code>--min-rate &lt;number&gt;</code>) 时，我们告诉<code>Nmap</code>同时发送指定数量的数据包。它将尝试相应地维持速率。</p>
+<h5 id="_34">默认扫描</h5>
+<p>默认扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F -oN tnet.default
+
+&lt;SNIP&gt;
+Nmap done: 256 IP addresses (10 hosts up) scanned in 29.83 seconds
+</code></pre>
+<h5 id="_35">优化扫描</h5>
+<p>优化扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F -oN tnet.minrate300 --min-rate 300
+
+&lt;SNIP&gt;
+Nmap done: 256 IP addresses (10 hosts up) scanned in 8.67 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.0/24</code></td>
+<td>扫描指定的目标网络。</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>扫描前 100 个端口。</td>
+</tr>
+<tr>
+<td><code>-oN tnet.minrate300</code></td>
+<td>以普通格式保存结果，从指定的文件名开始。</td>
+</tr>
+<tr>
+<td><code>--min-rate 300</code></td>
+<td>设置将同时发送的数据包数。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h5 id="-">默认扫描 - 找到打开的端口</h5>
+<p>默认扫描 - 找到打开的端口</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ cat tnet.default | grep &quot;/tcp&quot; | wc -l
+
+23
+</code></pre>
+<h5 id="-_1">优化扫描 - 找到开放端口</h5>
+<p>优化扫描 - 找到开放端口</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ cat tnet.minrate300 | grep &quot;/tcp&quot; | wc -l
+
+23
+</code></pre>
+<hr />
+<h4 id="_36">定时</h4>
+<p>因为这样的设置不能总是手动优化，就像在黑盒渗透测试中一样，<code>Nmap</code>提供了六种不同的时间模板 ( <code>-T &lt;0-5&gt;</code>) 供我们使用。这些值 ( <code>0-5</code>) 决定了我们扫描的积极性。如果扫描过于激进，这也会产生负面影响，并且安全系统可能会由于产生的网络流量而阻止我们。当我们没有定义任何其他内容时使用的默认时序模板是正常的 ( <code>-T 3</code>)。</p>
+<ul>
+<li><code>-T 0</code> / <code>-T paranoid</code></li>
+<li><code>-T 1</code>/<code>-T sneaky</code></li>
+<li><code>-T 2</code>/<code>-T polite</code></li>
+<li><code>-T 3</code>/<code>-T normal</code></li>
+<li><code>-T 4</code>/<code>-T aggressive</code></li>
+<li><code>-T 5</code>/<code>-T insane</code></li>
+</ul>
+<p>这些模板包含我们也可以手动设置的选项，并且已经看到了其中的一些。开发人员根据其最佳结果确定为这些模板设置的值，使我们更容易使我们的扫描适应相应的网络环境。我们可以在这里找到确切使用的选项及其值：<a href="https://nmap.org/book/performance-timing-templates.html">https ://nmap.org/book/performance-timing-templates.html</a></p>
+<h5 id="_37">默认扫描</h5>
+<p>默认扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F -oN tnet.default 
+
+&lt;SNIP&gt;
+Nmap done: 256 IP addresses (10 hosts up) scanned in 32.44 seconds
+</code></pre>
+<h5 id="_38">疯狂扫描</h5>
+<p>疯狂扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.0/24 -F -oN tnet.T5 -T 5
+
+&lt;SNIP&gt;
+Nmap done: 256 IP addresses (10 hosts up) scanned in 18.07 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.0/24</code></td>
+<td>扫描指定的目标网络。</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>扫描前 100 个端口。</td>
+</tr>
+<tr>
+<td><code>-oN tnet.T5</code></td>
+<td>以普通格式保存结果，从指定的文件名开始。</td>
+</tr>
+<tr>
+<td><code>-T 5</code></td>
+<td>指定疯狂计时模板。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h5 id="-_2">默认扫描 - 找到打开的端口</h5>
+<p>默认扫描 - 找到打开的端口</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ cat tnet.default | grep &quot;/tcp&quot; | wc -l
+
+23
+</code></pre>
+<h5 id="-_3">疯狂扫描 - 发现开放端口</h5>
+<p>疯狂扫描 - 发现开放端口</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ cat tnet.T5 | grep &quot;/tcp&quot; | wc -l
+
+23
+</code></pre>
+<hr />
+<p><a href="https://nmap.org/book/man-performance.html">我们可以在https://nmap.org/book/man-performance.html</a>找到有关扫描性能的更多信息</p>
+<h2 id="_39">绕过安全措施</h2>
+<h3 id="idsips">防火墙和 IDS/IPS 规避</h3>
+<p><code>Nmap</code>为我们提供了许多不同的方法来绕过防火墙规则和 IDS/IPS。这些方法包括数据包分段、诱饵的使用以及我们将在本节中讨论的其他方法。</p>
+<hr />
+<h4 id="_40">防火墙</h4>
+<p>防火墙是一种防止来自外部网络的未授权连接尝试的安全措施。每个防火墙安全系统都基于一个软件组件，该组件监视防火墙和传入数据连接之间的网络流量，并根据已设置的规则决定如何处理连接。它检查单个网络数据包是否被传递、忽略或阻止。此机制旨在防止可能具有潜在危险的不需要的连接。</p>
+<hr />
+<h4 id="ips">入侵检测系统/IPS</h4>
+<p>与防火墙一样，入侵检测系统（<code>IDS</code>）和入侵防御系统（<code>IPS</code>）也是基于软件的组件。<code>IDS</code>扫描网络以寻找潜在的攻击，对其进行分析，并报告检测到的任何攻击。如果应该检测到潜在的攻击，则采取特定的防御措施作为<code>IPS</code>补充。<code>IDS</code>此类攻击的分析基于模式匹配和签名。如果检测到特定模式，例如服务检测扫描，<code>IPS</code>可能会阻止挂起的连接尝试。</p>
+<hr />
+<h5 id="_41">确定防火墙及其规则</h5>
+<p>我们已经知道，当端口显示为已过滤时，可能有多种原因。在大多数情况下，防火墙设置了特定的规则来处理特定的连接。数据包可以是<code>dropped</code>, 或<code>rejected</code>。数据<code>dropped</code>包被忽略，主机不返回任何响应。</p>
+<p>这对于<code>rejected</code>返回带有<code>RST</code>标志的数据包是不同的。这些数据包包含不同类型的 ICMP 错误代码或根本不包含任何内容。</p>
+<p>此类错误可能是：</p>
+<ul>
+<li>网络不可达</li>
+<li>网络禁止</li>
+<li>主机不可达</li>
+<li>主机禁止</li>
+<li>端口不可达</li>
+<li>原型无法访问</li>
+</ul>
+<p>Nmap 的 TCP ACK 扫描 ( ) 方法比常规 SYN ( ) 或连接扫描 ( )<code>-sA</code>更难过滤防火墙和 IDS/IPS 系统，因为它们只发送带有标志的 TCP 数据包。当端口关闭或打开时，主机必须响应一个标志。与传出连接不同，来自外部网络的所有连接尝试（带有标志）通常都被防火墙阻止。但是，带有标志的数据包往往会被防火墙通过，因为防火墙无法确定连接首先是从外部网络还是内部网络建立的。<code>-sS``sT``ACK``RST``SYN``ACK</code></p>
+<p>如果我们查看这些扫描，我们将看到结果有何不同。</p>
+<h5 id="_42">同步扫描</h5>
+<p>同步扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 21,22,25 -sS -Pn -n --disable-arp-ping --packet-trace
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-21 14:56 CEST
+SENT (0.0278s) TCP 10.10.14.2:57347 &gt; 10.129.2.28:22 S ttl=53 id=22412 iplen=44  seq=4092255222 win=1024 &lt;mss 1460&gt;
+SENT (0.0278s) TCP 10.10.14.2:57347 &gt; 10.129.2.28:25 S ttl=50 id=62291 iplen=44  seq=4092255222 win=1024 &lt;mss 1460&gt;
+SENT (0.0278s) TCP 10.10.14.2:57347 &gt; 10.129.2.28:21 S ttl=58 id=38696 iplen=44  seq=4092255222 win=1024 &lt;mss 1460&gt;
+RCVD (0.0329s) ICMP [10.129.2.28 &gt; 10.10.14.2 Port 21 unreachable (type=3/code=3) ] IP [ttl=64 id=40884 iplen=72 ]
+RCVD (0.0341s) TCP 10.129.2.28:22 &gt; 10.10.14.2:57347 SA ttl=64 id=0 iplen=44  seq=1153454414 win=64240 &lt;mss 1460&gt;
+RCVD (1.0386s) TCP 10.129.2.28:22 &gt; 10.10.14.2:57347 SA ttl=64 id=0 iplen=44  seq=1153454414 win=64240 &lt;mss 1460&gt;
+SENT (1.1366s) TCP 10.10.14.2:57348 &gt; 10.129.2.28:25 S ttl=44 id=6796 iplen=44  seq=4092320759 win=1024 &lt;mss 1460&gt;
+Nmap scan report for 10.129.2.28
+Host is up (0.0053s latency).
+
+PORT   STATE    SERVICE
+21/tcp filtered ftp
+22/tcp open     ssh
+25/tcp filtered smtp
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.07 seconds
+</code></pre>
+<h5 id="_43">确认扫描</h5>
+<p>确认扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 21,22,25 -sA -Pn -n --disable-arp-ping --packet-trace
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-21 14:57 CEST
+SENT (0.0422s) TCP 10.10.14.2:49343 &gt; 10.129.2.28:21 A ttl=49 id=12381 iplen=40  seq=0 win=1024
+SENT (0.0423s) TCP 10.10.14.2:49343 &gt; 10.129.2.28:22 A ttl=41 id=5146 iplen=40  seq=0 win=1024
+SENT (0.0423s) TCP 10.10.14.2:49343 &gt; 10.129.2.28:25 A ttl=49 id=5800 iplen=40  seq=0 win=1024
+RCVD (0.1252s) ICMP [10.129.2.28 &gt; 10.10.14.2 Port 21 unreachable (type=3/code=3) ] IP [ttl=64 id=55628 iplen=68 ]
+RCVD (0.1268s) TCP 10.129.2.28:22 &gt; 10.10.14.2:49343 R ttl=64 id=0 iplen=40  seq=1660784500 win=0
+SENT (1.3837s) TCP 10.10.14.2:49344 &gt; 10.129.2.28:25 A ttl=59 id=21915 iplen=40  seq=0 win=1024
+Nmap scan report for 10.129.2.28
+Host is up (0.083s latency).
+
+PORT   STATE      SERVICE
+21/tcp filtered   ftp
+22/tcp unfiltered ssh
+25/tcp filtered   smtp
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.15 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 21,22,25</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>-sS</code></td>
+<td>在指定端口上执行 SYN 扫描。</td>
+</tr>
+<tr>
+<td><code>-sA</code></td>
+<td>对指定端口执行 ACK 扫描。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+</tbody>
+</table>
+<p>请注意我们从目标收到的 RCVD 数据包及其设置标志。使用 SYN 扫描 ( <code>-sS</code>)，我们的目标尝试通过发送回<code>SA</code>设置了 SYN-ACK () 标志的数据包来建立 TCP 连接，而使用 ACK 扫描 ( <code>-sA</code>)，我们获得<code>RST</code>标志，因为 TCP 端口 22 是打开的。对于 TCP 端口 25，我们没有收到任何返回的数据包，这表明数据包将被丢弃。</p>
+<hr />
+<h4 id="idsips_1">检测 IDS/IPS</h4>
+<p>与防火墙及其规则不同，IDS/IPS 系统的检测要困难得多，因为它们是被动流量监控系统。<code>IDS systems</code>检查主机之间的所有连接。如果 IDS 发现包含定义的内容或规范的数据包，管理员会收到通知并在最坏的情况下采取适当的措施。</p>
+<p><code>IPS systems</code>采取管理员自主配置的措施，自动防范潜在攻击。必须知道 IDS 和 IPS 是不同的应用程序，并且 IPS 是对 IDS 的补充。</p>
+<p><code>VPS</code>建议使用多个具有不同 IP 地址的虚拟专用服务器 ( ) 来确定此类系统在渗透测试期间是否在目标网络上。如果管理员在目标网络上检测到此类潜在攻击，第一步就是阻止潜在攻击来自的 IP 地址。因此，我们将无法再使用该 IP 地址访问网络，我们的互联网服务提供商 ( <code>ISP</code>) 将被联系并被阻止访问互联网。</p>
+<ul>
+<li><code>IDS systems</code>通常单独存在可以帮助管理员检测对其网络的潜在攻击。然后他们可以决定如何处理此类连接。我们可以触发管理员的某些安全措施，例如，通过积极扫描单个端口及其服务。根据是否采取了具体的安全措施，我们可以检测出网络中是否存在一些监控应用。</li>
+<li>确定<code>IPS system</code>目标网络中是否存在此类问题的一种方法是从单个主机进行扫描 ( <code>VPS</code>)。如果在任何时候该主机被阻止并且无法访问目标网络，我们就知道管理员已经采取了一些安全措施。因此，我们可以继续我们的渗透测试与另一个<code>VPS</code>。</li>
+</ul>
+<p>因此，我们知道我们需要更安静地进行扫描，并且在最好的情况下，伪装与目标网络及其服务的所有交互。</p>
+<hr />
+<h4 id="_44">诱饵</h4>
+<p>在某些情况下，管理员原则上会阻止来自不同地区的特定子网。这会阻止对目标网络的任何访问。另一个例子是 IPS 什么时候应该阻止我们。因此，诱饵扫描方法 ( <code>-D</code>) 是正确的选择。使用这种方法，Nmap 会生成各种随机 IP 地址，并将其插入到 IP 标头中，以伪装所发送数据包的来源。使用这种方法，我们可以生成随机 ( <code>RND</code>) 个特定数量（例如：<code>5</code>）的 IP 地址，用冒号 (<code>:</code>). 然后我们的真实 IP 地址随机放置在生成的 IP 地址之间。因此，在下一个示例中，我们的真实 IP 地址位于第二个位置。另一个关键点是诱饵必须是活的。否则，由于 SYN 泛洪安全机制，目标上的服务可能无法访问。</p>
+<h5 id="_45">使用诱饵扫描</h5>
+<p>使用诱饵扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p 80 -sS -Pn -n --disable-arp-ping --packet-trace -D RND:5
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-21 16:14 CEST
+SENT (0.0378s) TCP 102.52.161.59:59289 &gt; 10.129.2.28:80 S ttl=42 id=29822 iplen=44  seq=3687542010 win=1024 &lt;mss 1460&gt;
+SENT (0.0378s) TCP 10.10.14.2:59289 &gt; 10.129.2.28:80 S ttl=59 id=29822 iplen=44  seq=3687542010 win=1024 &lt;mss 1460&gt;
+SENT (0.0379s) TCP 210.120.38.29:59289 &gt; 10.129.2.28:80 S ttl=37 id=29822 iplen=44  seq=3687542010 win=1024 &lt;mss 1460&gt;
+SENT (0.0379s) TCP 191.6.64.171:59289 &gt; 10.129.2.28:80 S ttl=38 id=29822 iplen=44  seq=3687542010 win=1024 &lt;mss 1460&gt;
+SENT (0.0379s) TCP 184.178.194.209:59289 &gt; 10.129.2.28:80 S ttl=39 id=29822 iplen=44  seq=3687542010 win=1024 &lt;mss 1460&gt;
+SENT (0.0379s) TCP 43.21.121.33:59289 &gt; 10.129.2.28:80 S ttl=55 id=29822 iplen=44  seq=3687542010 win=1024 &lt;mss 1460&gt;
+RCVD (0.1370s) TCP 10.129.2.28:80 &gt; 10.10.14.2:59289 SA ttl=64 id=0 iplen=44  seq=4056111701 win=64240 &lt;mss 1460&gt;
+Nmap scan report for 10.129.2.28
+Host is up (0.099s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.15 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 80</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>-sS</code></td>
+<td>在指定端口上执行 SYN 扫描。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>-D RND:5</code></td>
+<td>生成五个随机 IP 地址，指示连接来自的源 IP。</td>
+</tr>
+</tbody>
+</table>
+<p>欺骗性数据包通常会被 ISP 和路由器过滤掉，即使它们来自相同的网络范围。因此，我们也可以指定我们的 VPS 服务器的 IP 地址，并结合<code>IP ID</code>IP 标头中的“”操作来使用它们来扫描目标。</p>
+<p>另一种情况是只有个别子网无法访问服务器的特定服务。所以我们也可以手动指定源IP地址( <code>-S</code>) 来测试用这个是否能得到更好的结果。诱饵可用于 SYN、ACK、ICMP 扫描和操作系统检测扫描。那么让我们看看这样一个例子，并确定它最有可能是哪个操作系统。</p>
+<h5 id="_46">测试防火墙规则</h5>
+<p>测试防火墙规则</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -n -Pn -p445 -O
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-22 01:23 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.032s latency).
+
+PORT    STATE    SERVICE
+445/tcp filtered microsoft-ds
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+Too many fingerprints match this host to give specific OS details
+Network Distance: 1 hop
+
+OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 3.14 seconds
+</code></pre>
+<h5 id="ip_3">使用不同源 IP 扫描</h5>
+<p>使用不同源 IP 扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -n -Pn -p 445 -O -S 10.129.2.200 -e tun0
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-22 01:16 CEST
+Nmap scan report for 10.129.2.28
+Host is up (0.010s latency).
+
+PORT    STATE SERVICE
+445/tcp open  microsoft-ds
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Linux 2.6.32 (96%), Linux 3.2 - 4.9 (96%), Linux 2.6.32 - 3.10 (96%), Linux 3.4 - 3.10 (95%), Linux 3.1 (95%), Linux 3.2 (95%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%), Synology DiskStation Manager 5.2-5644 (94%), Linux 2.6.32 - 2.6.35 (94%), Linux 2.6.32 - 3.5 (94%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 1 hop
+
+OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 4.11 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-p 445</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>-O</code></td>
+<td>执行操作系统检测扫描。</td>
+</tr>
+<tr>
+<td><code>-S</code></td>
+<td>使用不同的源 IP 地址扫描目标。</td>
+</tr>
+<tr>
+<td><code>10.129.2.200</code></td>
+<td>指定源IP地址。</td>
+</tr>
+<tr>
+<td><code>-e tun0</code></td>
+<td>通过指定接口发送所有请求。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="dns">DNS 代理</h4>
+<p>默认情况下，<code>Nmap</code>除非另有说明，否则执行反向 DNS 解析以查找有关我们目标的更多重要信息。在大多数情况下，这些 DNS 查询也会通过，因为应该找到并访问给定的 Web 服务器。DNS 查询是通过<code>UDP port 53</code>. 以前<code>TCP port 53</code>仅用于 DNS 服务器之间所谓的“ <code>Zone transfers</code>”或大于 512 字节的数据传输。由于 IPv6 和 DNSSEC 扩展，这种情况越来越多地发生变化。这些更改导致许多 DNS 请求通过 TCP 端口 53 发出。</p>
+<p>但是，<code>Nmap</code>仍然为我们提供了一种自己指定 DNS 服务器的方法 ( <code>--dns-server &lt;ns&gt;,&lt;ns&gt;</code>)。如果我们处于非军事区 ( <code>DMZ</code>)，这种方法对我们来说可能是基本的。公司的 DNS 服务器通常比来自 Internet 的服务器更受信任。因此，例如，我们可以使用它们与内部网络的主机进行交互。作为另一个示例，我们可以将( ) 用作扫描的<code>TCP port 53</code>源端口。<code>--source-port</code>如果管理员使用防火墙控制这个端口，没有正确过滤IDS/IPS，我们的TCP数据包就会被信任并通过。</p>
+<h5 id="syn">过滤端口的 SYN 扫描</h5>
+<p>过滤端口的 SYN 扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-21 22:50 CEST
+SENT (0.0417s) TCP 10.10.14.2:33436 &gt; 10.129.2.28:50000 S ttl=41 id=21939 iplen=44  seq=736533153 win=1024 &lt;mss 1460&gt;
+SENT (1.0481s) TCP 10.10.14.2:33437 &gt; 10.129.2.28:50000 S ttl=46 id=6446 iplen=44  seq=736598688 win=1024 &lt;mss 1460&gt;
+Nmap scan report for 10.129.2.28
+Host is up.
+
+PORT      STATE    SERVICE
+50000/tcp filtered ibm-db2
+
+Nmap done: 1 IP address (1 host up) scanned in 2.06 seconds
+</code></pre>
+<h5 id="dns-syn">从 DNS 端口进行 SYN 扫描</h5>
+<p>从 DNS 端口进行 SYN 扫描</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53
+
+SENT (0.0482s) TCP 10.10.14.2:53 &gt; 10.129.2.28:50000 S ttl=58 id=27470 iplen=44  seq=4003923435 win=1024 &lt;mss 1460&gt;
+RCVD (0.0608s) TCP 10.129.2.28:50000 &gt; 10.10.14.2:53 SA ttl=64 id=0 iplen=44  seq=540635485 win=64240 &lt;mss 1460&gt;
+Nmap scan report for 10.129.2.28
+Host is up (0.013s latency).
+
+PORT      STATE SERVICE
+50000/tcp open  ibm-db2
+MAC Address: DE:AD:00:00:BE:EF (Intel Corporate)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.08 seconds
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>扫描选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.129.2.28</code></td>
+<td>扫描指定目标。</td>
+</tr>
+<tr>
+<td><code>-p 50000</code></td>
+<td>只扫描指定的端口。</td>
+</tr>
+<tr>
+<td><code>-sS</code></td>
+<td>在指定端口上执行 SYN 扫描。</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>禁用 ICMP Echo 请求。</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>禁用 DNS 解析。</td>
+</tr>
+<tr>
+<td><code>--disable-arp-ping</code></td>
+<td>禁用 ARP ping。</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>显示所有发送和接收的数据包。</td>
+</tr>
+<tr>
+<td><code>--source-port 53</code></td>
+<td>从指定的源端口执行扫描。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>现在我们已经发现防火墙接受<code>TCP port 53</code>，很可能 IDS/IPS 过滤器的配置也比其他过滤器弱得多。我们可以通过尝试使用连接到这个端口来测试这一点<code>Netcat</code>。</p>
+<h5 id="_47">连接到过滤端口</h5>
+<p>连接到过滤端口</p>
+<pre><code class="language-shell-session">darkinga@htb[/htb]$ ncat -nv --source-port 53 10.129.2.28 50000
+
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Connected to 10.129.2.28:50000.
+220 ProFTPd
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.6eac0284.min.js"></script>
+      
+    
+  </body>
+</html>
